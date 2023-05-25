@@ -82,9 +82,11 @@ export const Element = styled.div`
   place-items: center;
 `;
 
-export const ElementTitle = styled.div`
+export const ElementTitle = styled.span<{
+  isKeyword : boolean
+}>`
   cursor: pointer;
-
+  color : ${(props) => props.isKeyword ? 'red' : 'black'};
   &:hover {
     text-decoration: underline;
   }

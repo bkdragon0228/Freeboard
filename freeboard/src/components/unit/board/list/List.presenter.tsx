@@ -4,6 +4,7 @@ import { getDate } from "../../../../commons/utils/utils";
 import { IQuery } from "../../../../commons/types/generated/types";
 import Pagenation from "../../../commons/pagination/pagination";
 import { ApolloQueryResult, OperationVariables } from "@apollo/client";
+import SearchBar from "../../../commons/searchBar/SearchBar";
 
 export default function BoardListUI({
   data,
@@ -13,7 +14,9 @@ export default function BoardListUI({
   setPage,
   refetchBoards,
   refetchLastPage,
-  lastPage
+  lastPage,
+  onChangeSearchTerm,
+  searchTerm,
 } : {
   data : Pick<IQuery, "fetchBoards">;
   handleCreateBoard : React.MouseEventHandler<HTMLButtonElement> ;
@@ -23,6 +26,8 @@ export default function BoardListUI({
   refetchBoards : (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<Pick<IQuery, "fetchBoards">>>;
   refetchLastPage : any;
   lastPage : number;
+  onChangeSearchTerm : (value : string) => void;
+  searchTerm : string;
 }) {
   const dummy = Array.from({ length: 4 }, (v, i) => {
     return {
@@ -30,36 +35,6 @@ export default function BoardListUI({
       ele: i,
     };
   });
-  const [debounce, setDebounce] = useState(0)
-  const [searchTerm, setSearchTerm] = useState<string>('')
-
-  const getDebounce = (callback : () => void, timeout : number = 500) => {
-      if(debounce) window.clearTimeout(debounce)
-      const timer = window.setTimeout(() => {
-        callback()
-      }, timeout)
-      setDebounce(timer)
-  }
-
-  const onChangeInput = (e : ChangeEvent<HTMLInputElement>) => {
-    getDebounce(() => {
-      setSearchTerm(e.target.value)
-    }, 200)
-  }
-
-  const onClickSearchButton = () => {
-    getDebounce(() => {
-      refetchBoards({
-        search : searchTerm,
-        page : 1
-      })
-      refetchLastPage({
-        search : searchTerm
-      })
-    })
-  }
-
-
 
   return (
     <S.Container>
@@ -84,22 +59,11 @@ export default function BoardListUI({
       {/*  베스트 게시글 */}
 
       <S.InputWrapper>
-        <S.searchIcon
-          width="18"
-          height="18"
-          viewBox="0 0 18 18"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12.5 11H11.71L11.43 10.73C12.41 9.59 13 8.11 13 6.5C13 2.91 10.09 0 6.5 0C2.91 0 0 2.91 0 6.5C0 10.09 2.91 13 6.5 13C8.11 13 9.59 12.41 10.73 11.43L11 11.71V12.5L16 17.49L17.49 16L12.5 11ZM6.5 11C4.01 11 2 8.99 2 6.5C2 4.01 4.01 2 6.5 2C8.99 2 11 4.01 11 6.5C11 8.99 8.99 11 6.5 11Z"
-            fill="black"
-          />
-        </S.searchIcon>
-
-        <S.SearchInput placeholder="제목을 검색해주세요." onChange={onChangeInput} />
-        <S.PeriodInput />
-        <S.Button onClick={onClickSearchButton}>검색하기</S.Button>
+        <SearchBar
+          refetch={refetchBoards}
+          refetchCount={refetchLastPage}
+          onChangeSearchTerm={onChangeSearchTerm}
+        />
       </S.InputWrapper>
 
       <S.ListWrapper>
@@ -107,9 +71,15 @@ export default function BoardListUI({
           {data?.fetchBoards.map((e, i) => (
             <S.Element key={e._id}>
               <div>{i + 1}</div>
-              <S.ElementTitle id={e._id} onClick={handleMoveDetail}>
-                {e.title}
-              </S.ElementTitle>
+              <div>
+                {
+                  e.title.replaceAll(searchTerm, `!@#$${searchTerm}!@#$`).split('!@#$').map((title, i) => (
+                    <S.ElementTitle id={e._id} onClick={handleMoveDetail} key={i} isKeyword={title === searchTerm ? true : false}>
+                      {title}
+                    </S.ElementTitle>
+                  ))
+                }
+              </div>
               <div>{e.writer}</div>
               <div>{getDate(e.createdAt)}</div>
             </S.Element>

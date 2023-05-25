@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 
 import styled from '@emotion/styled'
+import DatePickerComponent from '../datePicker/DatePicker';
 
 interface SearchBarProps {
     refetch : any;
@@ -37,6 +38,8 @@ const SearchBar : React.FC<SearchBarProps> = ({
     onChangeSearchTerm
 }) => {
     const [debounce, setDebounce] = useState(0)
+    const [startDate, setStartDate] = useState(new Date('2020-01-01'))
+    const [endDate, setEndDate] = useState(new Date())
 
     const getDebounce = (callback : () => void, timeout : number = 500) => {
         if(debounce) window.clearTimeout(debounce)
@@ -50,15 +53,19 @@ const SearchBar : React.FC<SearchBarProps> = ({
         getDebounce(() => {
             onChangeSearchTerm(e.target.value)
             refetch({
-                search : e.target.value
+                search : e.target.value,
+                startDate,
+                endDate,
             })
             refetchCount({
-                search : e.target.value
+                search : e.target.value,
+                startDate,
+                endDate,
             })
         })
     }
     return (
-        <div>
+        <div style={{display : 'flex', columnGap : '1rem'}}>
             <SearchIcon
             width="18"
             height="18"
@@ -73,7 +80,12 @@ const SearchBar : React.FC<SearchBarProps> = ({
             </SearchIcon>
 
             <SearchInput placeholder="제목을 검색해주세요." onChange={onChangeInput} />
-            <PeriodInput />
+            <DatePickerComponent
+                endDate={endDate}
+                setEndDate={setEndDate}
+                startDate={startDate}
+                setStartDate={setStartDate}
+            />
         </div>
     );
 };

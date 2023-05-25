@@ -15,6 +15,10 @@ export default function BoardList() {
     },
   });
 
+  const onChangeSearchTerm = useCallback((value : string) => {
+    setSearchTerm(value)
+  }, [setSearchTerm])
+
   const {data : lastPage, refetch : refetchLastPage} = useQuery<Pick<IQuery, 'fetchBoardsCount'>>(FETCH_BOARDS_COUNT)
 
   if (loading) {
@@ -29,9 +33,7 @@ export default function BoardList() {
     router.push("boards/new");
   };
 
-  const onChangeSearchTerm = useCallback((value : string) => {
-    setSearchTerm(value)
-  }, [setSearchTerm])
+
 
   return (
     <BoardListUI
@@ -42,7 +44,7 @@ export default function BoardList() {
       refetchLastPage={refetchLastPage}
       page={page}
       setPage={setPage}
-      lastPage={lastPage.fetchBoardsCount}
+      lastPage={lastPage?.fetchBoardsCount}
       onChangeSearchTerm={onChangeSearchTerm}
       searchTerm={searchTerm}
     />

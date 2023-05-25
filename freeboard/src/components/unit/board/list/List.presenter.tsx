@@ -36,6 +36,7 @@ export default function BoardListUI({
     };
   });
 
+
   return (
     <S.Container>
       <S.Best>
@@ -60,10 +61,10 @@ export default function BoardListUI({
 
       <S.InputWrapper>
         <SearchBar
-          refetch={refetchBoards}
-          refetchCount={refetchLastPage}
-          onChangeSearchTerm={onChangeSearchTerm}
-        />
+            refetch={refetchBoards}
+            refetchCount={refetchLastPage}
+            onChangeSearchTerm={onChangeSearchTerm}
+          />
       </S.InputWrapper>
 
       <S.ListWrapper>

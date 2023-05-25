@@ -14,7 +14,7 @@ export default function BoardList() {
     },
   });
 
-  const {data : lastPage} = useQuery<Pick<IQuery, 'fetchBoardsCount'>>(FETCH_BOARDS_COUNT)
+  const {data : lastPage, refetch : refetchLastPage} = useQuery<Pick<IQuery, 'fetchBoardsCount'>>(FETCH_BOARDS_COUNT)
 
   if (loading) {
     return <div>Loading..</div>;
@@ -34,6 +34,7 @@ export default function BoardList() {
       handleMoveDetail={handleMoveDetail}
       handleCreateBoard={handleCreateBoard}
       refetchBoards={refetchBoards}
+      refetchLastPage={refetchLastPage}
       page={page}
       setPage={setPage}
       lastPage={lastPage.fetchBoardsCount}

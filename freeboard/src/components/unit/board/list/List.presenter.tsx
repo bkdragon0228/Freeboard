@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import * as S from "./List.style";
 import { getDate } from "../../../../commons/utils/utils";
 import { IQuery } from "../../../../commons/types/generated/types";
@@ -12,6 +12,7 @@ export default function BoardListUI({
   page,
   setPage,
   refetchBoards,
+  refetchLastPage,
   lastPage
 } : {
   data : Pick<IQuery, "fetchBoards">;
@@ -20,6 +21,7 @@ export default function BoardListUI({
   page : number;
   setPage : React.Dispatch<React.SetStateAction<number>>;
   refetchBoards : (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<Pick<IQuery, "fetchBoards">>>;
+  refetchLastPage : any;
   lastPage : number;
 }) {
   const dummy = Array.from({ length: 4 }, (v, i) => {
@@ -28,6 +30,35 @@ export default function BoardListUI({
       ele: i,
     };
   });
+  const [debounce, setDebounce] = useState(0)
+  const [searchTerm, setSearchTerm] = useState<string>('')
+
+  const getDebounce = (callback : () => void, timeout : number = 500) => {
+      if(debounce) window.clearTimeout(debounce)
+      const timer = window.setTimeout(() => {
+        callback()
+      }, timeout)
+      setDebounce(timer)
+  }
+
+  const onChangeInput = (e : ChangeEvent<HTMLInputElement>) => {
+    getDebounce(() => {
+      setSearchTerm(e.target.value)
+    }, 200)
+  }
+
+  const onClickSearchButton = () => {
+    getDebounce(() => {
+      refetchBoards({
+        search : searchTerm,
+        page : 1
+      })
+      refetchLastPage({
+        search : searchTerm
+      })
+    })
+  }
+
 
 
   return (
@@ -66,9 +97,9 @@ export default function BoardListUI({
           />
         </S.searchIcon>
 
-        <S.SearchInput placeholder="제목을 검색해주세요." />
+        <S.SearchInput placeholder="제목을 검색해주세요." onChange={onChangeInput} />
         <S.PeriodInput />
-        <S.Button>검색하기</S.Button>
+        <S.Button onClick={onClickSearchButton}>검색하기</S.Button>
       </S.InputWrapper>
 
       <S.ListWrapper>

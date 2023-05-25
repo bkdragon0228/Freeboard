@@ -59,6 +59,7 @@ export const Button = styled.button`
   background-color: #000000;
   color: white;
   border-radius: 10px;
+  cursor: pointer;
 `;
 
 export const ListWrapper = styled.div`

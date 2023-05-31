@@ -9,13 +9,14 @@ import { RecoilRoot } from "recoil";
 export default function App({ Component, pageProps } : AppProps) {
   return (
     <>
-      <ApolloClientSetting >
-          <RecoilRoot>
+      <RecoilRoot>
+        <ApolloClientSetting >
             <Layout>
               <Component {...pageProps} />;
             </Layout>
-          </RecoilRoot>
-      </ApolloClientSetting>
+        </ApolloClientSetting>
+      </RecoilRoot>
+
     </>
   );
 }

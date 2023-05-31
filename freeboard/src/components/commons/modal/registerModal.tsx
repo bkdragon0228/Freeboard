@@ -1,9 +1,10 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
-
-import styled from '@emotion/styled';
 import { gql, useMutation } from '@apollo/client';
 import { IMutation, IMutationCreateUserArgs } from '../../../commons/types/generated/types';
+
+
+import styled from '@emotion/styled';
 
 const CREATE_USER = gql`
     mutation CreateUser($createUserInput : CreateUserInput!){
@@ -32,7 +33,7 @@ interface FormProps {
     password : string;
 }
 
-const ModalContainer = styled.div`
+export const ModalContainer = styled.div`
     position: fixed;
     top : 0;
     left : 0;
@@ -45,7 +46,7 @@ const ModalContainer = styled.div`
     color : white;
 `
 
-const Inputs = styled.div`
+export const Inputs = styled.div`
     padding: 20px;
     width: 500px;
     height: 700px;

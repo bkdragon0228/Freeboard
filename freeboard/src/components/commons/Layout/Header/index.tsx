@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useSetRecoilState } from 'recoil'
+import { isOpenStateBySign } from '../../../../../state/isOpenState'
 import styled from '@emotion/styled'
 import Carousel from '../../Carousel'
 
@@ -38,6 +40,17 @@ const RegisterButton = styled(LoginButton)`
 
 
 export default function LayoutHeader() {
+    const setIsOpenRegister = useSetRecoilState(isOpenStateBySign('register'))
+    const setIsOpenLogin= useSetRecoilState(isOpenStateBySign('login'))
+
+    const onClickRegister = () => {
+        setIsOpenRegister(true)
+    }
+
+    const onClickLogin = () => {
+        setIsOpenLogin(true)
+    }
+
   return (
     <Wrapper>
         <Header>
@@ -58,7 +71,7 @@ export default function LayoutHeader() {
             </Logo>
             <ButtonWrapper>
                 <LoginButton>로그인</LoginButton>
-                <RegisterButton>회원가입</RegisterButton>
+                <RegisterButton onClick={onClickRegister}>회원가입</RegisterButton>
             </ButtonWrapper>
         </Header>
         <Carousel />

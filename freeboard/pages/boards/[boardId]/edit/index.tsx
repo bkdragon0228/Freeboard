@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import { boardState } from "../../../../state/boardState";
 import { IQuery, IQueryFetchBoardArgs } from "../../../../src/commons/types/generated/types";
+import withAuth from "../../../../src/hoc/withAuth";
 
 export const FETCH_BOARD = gql`
   query FetchBoard($boardId: ID!) {
@@ -25,7 +26,7 @@ export const FETCH_BOARD = gql`
   }
 `;
 
-export default function BoardEditPage() {
+const BoardEditPage = () => {
   const router = useRouter();
   const setBoardData = useSetRecoilState(boardState);
   const { data, loading } = useQuery<Pick<IQuery, "fetchBoard">, IQueryFetchBoardArgs>(FETCH_BOARD, {
@@ -46,3 +47,5 @@ export default function BoardEditPage() {
 
   return <BoardWrite isEdit={true} />;
 }
+
+export default withAuth(BoardEditPage, null)

@@ -1,7 +1,7 @@
 import * as S from "./BoardWrite.styles";
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { ErrorMessage } from "@hookform/error-message";
-import {BoardWriteProp} from "./BoardWrite.types"
+import {BoardWriteUIProp} from "./BoardWrite.types"
 import { Modal } from 'antd';
 import { useState } from "react";
 import UploadImage from "../../../commons/upload/UploadImage";
@@ -19,7 +19,7 @@ export default function BoardWriteUI({
   images,
   onChangeImages
 } :
-  BoardWriteProp
+  BoardWriteUIProp
 ) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [address, setAddress] = useState<string>('');

@@ -8,9 +8,10 @@ import { useRecoilState } from "recoil";
 import { boardState } from "../../../../../state/boardState";
 import { FETCH_BOARD } from "../detail/BoardDetail.queries";
 import { IMutation, IMutationCreateBoardArgs, IMutationUpdateBoardArgs, IUpdateBoardInput } from "../../../../commons/types/generated/types";
-import { FormData } from "./BoardWrite.types"
+import { BoardWriteProps, FormData } from "./BoardWrite.types"
+import withAuth from "../../../../hoc/withAuth";
 
-export default function BoardWrite({ isEdit } : {isEdit : boolean}) {
+const BoardWrite : React.FC<BoardWriteProps> = ({ isEdit }) => {
   const router = useRouter();
   const [isAble, setIsAble] = useState<boolean>(false);
   const [createBoard] = useMutation<Pick<IMutation, "createBoard">, IMutationCreateBoardArgs>(CREATE_BOARD);
@@ -150,3 +151,5 @@ export default function BoardWrite({ isEdit } : {isEdit : boolean}) {
     />
   );
 }
+
+export default BoardWrite

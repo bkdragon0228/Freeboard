@@ -1,5 +1,8 @@
-import BoardWrite from "../../../src/components/unit/board/write/BoardWrite.container";
+import BoardWrite from '../../../src/components/unit/board/write/BoardWrite.container'
+import withAuth from '../../../src/hoc/withAuth'
 
-export default function BoardWritePage() {
-  return <BoardWrite />;
+const BoardWritePage = () => {
+  return <BoardWrite />
 }
+
+export default withAuth(BoardWritePage, null)

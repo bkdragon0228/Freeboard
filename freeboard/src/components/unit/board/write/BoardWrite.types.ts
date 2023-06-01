@@ -1,7 +1,11 @@
 import { FieldErrorsImpl, SubmitHandler, UseFormHandleSubmit, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { IBoard } from "../../../../commons/types/generated/types";
 
-export type BoardWriteProp = {
+export type BoardWriteProps = {
+  isEdit? : boolean
+}
+
+export type BoardWriteUIProp = {
   register : UseFormRegister<FormData>;
   handleSubmit : UseFormHandleSubmit<FormData>;
   onSubmit : SubmitHandler<FormData>

@@ -1,10 +1,13 @@
 import React from "react";
 import BoardList from "../../src/components/unit/board/list/List.container";
+import withAuth from "../../src/hoc/withAuth";
 
-export default function BoardListPage() {
+const BoardListPage = () => {
   return (
     <>
       <BoardList />
     </>
   );
 }
+
+export default withAuth(BoardListPage, null)

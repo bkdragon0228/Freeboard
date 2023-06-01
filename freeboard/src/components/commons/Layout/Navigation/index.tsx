@@ -28,7 +28,7 @@ const Menu = styled.div<{
 const NAVIGATION_MENUS = [
     {title : '자유게시판', path : '/boards'},
     {title : '중고마켓', path : '/market'},
-    {title : '마이페이지', path : '/my'},
+    {title : '마이페이지', path : '/user/my'},
 ]
 
 export default function LayoutNavigation() {

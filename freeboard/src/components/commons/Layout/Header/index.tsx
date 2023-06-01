@@ -3,6 +3,8 @@ import { useSetRecoilState } from 'recoil'
 import { isOpenStateBySign } from '../../../../../state/isOpenState'
 import styled from '@emotion/styled'
 import Carousel from '../../Carousel'
+import useUser from '../../../../hook/useUser'
+import ProfileImage from '../../profileImage'
 
 const Wrapper = styled.div`
     width : 100%;
@@ -10,14 +12,24 @@ const Wrapper = styled.div`
 const Header = styled.header`
     width : 1200px;
     margin : 0 auto;
-    padding-top : 3rem;
     height : 152px;
     display : flex;
     justify-content: space-between;
 `
-const Logo = styled.div``
+const Logo = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
 
 const ButtonWrapper = styled.div``
+
+const UserWrapper = styled.div`
+    width: 125px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
 
 const LoginButton = styled.button`
     width: 92px;
@@ -43,6 +55,8 @@ export default function LayoutHeader() {
     const setIsOpenRegister = useSetRecoilState(isOpenStateBySign('register'))
     const setIsOpenLogin= useSetRecoilState(isOpenStateBySign('login'))
 
+    const {data : userData} = useUser()
+
     const onClickRegister = () => {
         setIsOpenRegister(true)
     }
@@ -51,6 +65,7 @@ export default function LayoutHeader() {
         setIsOpenLogin(true)
     }
 
+    console.log(`userData ${userData}`)
   return (
     <Wrapper>
         <Header>
@@ -69,10 +84,22 @@ export default function LayoutHeader() {
                     <path d="M209.997 16.4429C209.997 19.1959 209.394 21.3962 208.189 23.0412C206.983 24.6863 205.353 25.5075 203.301 25.5075C201.716 25.5075 200.414 24.911 199.395 23.7204V32H194.022V7.44284H199.045L199.204 9.08274C200.236 7.77082 201.59 7.11486 203.27 7.11486C205.396 7.11486 207.048 7.92061 208.229 9.5321C209.41 11.1436 210 13.3594 210 16.1795V16.4429H209.997ZM204.624 16.0994C204.624 12.9513 203.733 11.3786 201.947 11.3786C200.671 11.3786 199.822 11.8486 199.395 12.7886V19.7718C199.862 20.7557 200.723 21.2464 201.977 21.2464C203.687 21.2464 204.572 19.7279 204.624 16.6882V16.0994Z" fill="black"/>
                 </svg>
             </Logo>
-            <ButtonWrapper>
-                <LoginButton>로그인</LoginButton>
-                <RegisterButton onClick={onClickRegister}>회원가입</RegisterButton>
-            </ButtonWrapper>
+            {
+                !userData ? (
+                    <ButtonWrapper>
+                        <LoginButton onClick={onClickLogin}>로그인</LoginButton>
+                        <RegisterButton onClick={onClickRegister}>회원가입</RegisterButton>
+                    </ButtonWrapper>
+                )  : (
+                    <UserWrapper>
+                        <ProfileImage url={userData?.fetchUserLoggedIn.picture}/>
+                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.79241 7.97063C6.3921 8.49064 5.6079 8.49064 5.20759 7.97063L0.311169 1.60999C-0.195028 0.952425 0.273737 -2.46314e-07 1.10358 -1.73767e-07L10.8964 6.82351e-07C11.7263 7.54898e-07 12.195 0.952426 11.6888 1.61L6.79241 7.97063Z" fill="black"/>
+                        </svg>
+                    </UserWrapper>
+                )
+            }
+
         </Header>
         <Carousel />
     </Wrapper>

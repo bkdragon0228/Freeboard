@@ -72,6 +72,19 @@ export const Items = styled.div`
     width: 1200px;
     height: 1000px;
     overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 80px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background: #FFD600;
+    }
+    &::-webkit-scrollbar-track {
+        background: #F2F2F2;
+        border-radius: 4px;
+    }
 `
 
 export const Item = styled.div`

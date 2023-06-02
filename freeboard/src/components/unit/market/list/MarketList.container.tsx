@@ -6,7 +6,7 @@ import MarketListUI from './MarketList.presenter';
 import { IQuery, IQueryFetchUseditemsArgs } from '../../../../commons/types/generated/types';
 
 const MarketList = () => {
-    const {data : marketItems} = useQuery<Pick<IQuery, 'fetchUseditems'>, IQueryFetchUseditemsArgs>(FETCH_USED_ITEMS, {
+    const {data : marketItems, fetchMore : fetchMarketItemMore} = useQuery<Pick<IQuery, 'fetchUseditems'>, IQueryFetchUseditemsArgs>(FETCH_USED_ITEMS, {
         variables :{
             page : 1,
             isSoldout : false,
@@ -16,10 +16,35 @@ const MarketList = () => {
 
     const {data : bestItems} = useQuery<Pick<IQuery, 'fetchUseditemsOfTheBest'>>(FETCH_USED_ITEMS_OF_THE_BEST)
 
-    console.log('best', bestItems)
+    console.log('marketItems', marketItems)
+
+    const itemListfetchMore = () => {
+        if(!marketItems?.fetchUseditems.length) return
+
+        fetchMarketItemMore({
+            variables : {
+                page : Math.ceil(marketItems?.fetchUseditems.length / 10) + 1,
+            },
+            updateQuery : (prev, {fetchMoreResult}) =>  {
+                if(!fetchMoreResult.fetchUseditems) {
+                    return {
+                        fetchUseditems : [...prev.fetchUseditems]
+                    }
+                }
+
+                return {
+                    fetchUseditems : [...prev.fetchUseditems, ...fetchMoreResult.fetchUseditems]
+                }
+            }
+
+        })
+    }
+
+
     return (
         <MarketListUI
             itemsList={marketItems}
+            itemListfetchMore={itemListfetchMore}
             bestItemsList={bestItems}
         />
     );

@@ -8,10 +8,12 @@ export const Container = styled.div`
 `
 
 export const Best = styled.div`
+    width: 1200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     row-gap: 40px;
+    margin-bottom: 80px;
 `
 
 export const BestItemsWrapper = styled.div`
@@ -58,4 +60,79 @@ export const HeartBox = styled.div`
     flex-direction: column;
     row-gap: 4px;
     align-items: center;
+`
+
+export const List = styled.div`
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+`
+
+export const Items = styled.div`
+    width: 1200px;
+    height: 1000px;
+    overflow-y: scroll;
+`
+
+export const Item = styled.div`
+    width: 100%;
+    height: 200px;
+    border-top: 1px solid #bdbdbd;
+    padding : 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+`
+
+export const ItemName = styled.div`
+    width: 100%;
+    height: 36px;
+    font-family: 'Noto Sans CJK KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    margin-bottom: 4px;
+`
+
+export const ItemTag = styled.div`
+    width: 100%;
+    height: 24px;
+    font-family: 'Noto Sans CJK KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #4F4F4F;
+    margin-bottom: 4px;
+`
+
+export const ItemRemarks = styled.div`
+    color: #bdbdbd;
+    margin-bottom: 24px;
+`
+
+export const ItemSellerInfo = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+export const SellerName = styled.div`
+    font-family: 'Noto Sans CJK KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    margin-left: 6px;
+    margin-right: 22px;
+`
+
+export const ItemPrice = styled.div`
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-family: 'Noto Sans CJK KR';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
 `

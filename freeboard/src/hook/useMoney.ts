@@ -16,8 +16,6 @@ export default function useMoney () {
             count++
         }
 
-        console.log(newReverse)
-
         const result = newReverse.split('').reverse().join('')
         return result
     }

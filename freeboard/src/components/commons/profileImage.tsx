@@ -16,7 +16,7 @@ const StyledProfile = styled.div<ProfileImageProps>`
     border-radius : ${(props) => props.isCircle ? "50%" : '0'};
     background-image : url(${(props) => props.url ? props.url : '/images/placeholder.png'});
     background-repeat : no-repeat;
-    background-size : contain;
+    background-size : cover;
     cursor: pointer;
 
     &:hover {
@@ -36,6 +36,7 @@ const ProfileImage : React.FC<ProfileImageProps> = ({
          isCircle,
          url
     }
+
     return (
         <StyledProfile {...props}/>
     );

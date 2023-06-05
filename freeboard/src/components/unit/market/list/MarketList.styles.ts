@@ -106,6 +106,11 @@ export const ItemName = styled.div`
     font-size: 24px;
     line-height: 36px;
     margin-bottom: 4px;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
 `
 
 export const ItemTag = styled.div`

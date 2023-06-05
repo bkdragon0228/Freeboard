@@ -7,6 +7,7 @@ import * as S from './MarketList.styles'
 import ItemImage from '../../../commons/profileImage';
 import InfiniteScroll from 'react-infinite-scroller';
 import SearchBarTriggerdByButton from '../../../commons/searchBar/SearchBarTriggerByButton';
+import { useRouter } from 'next/router';
 
 
 const MarketListUI : React.FC<MarketListUIProps> = ({
@@ -18,6 +19,7 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
     setIsSoldout
 }) => {
     const countMoney = useMoney()
+    const router = useRouter()
 
     return (
         <S.Container>
@@ -71,7 +73,7 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
                                         <ItemImage url={item.images[0] ? `https://storage.googleapis.com/${item.images[0]}` : '/images/no-images.png'} isCircle={false} width={160} height={160}/>
                                     </div>
                                     <div>
-                                        <S.ItemName>
+                                        <S.ItemName onClick={() => router.push(`/market/${item._id}`)}>
                                             {item?.name}
                                         </S.ItemName>
                                         <S.ItemTag>

@@ -28,6 +28,7 @@ export const FETCH_USED_ITEM = gql`
                     picture
                 }
                 soldAt
+                createdAt
             }
     }
 `

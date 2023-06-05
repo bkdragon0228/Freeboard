@@ -14,9 +14,10 @@ const MarketItemDetail = () => {
         }
     })
 
-    console.log('detail info' , itemDetail)
     return (
-       <MarketItemDetailUI />
+       <MarketItemDetailUI
+         detailData={itemDetail}
+       />
     );
 };
 

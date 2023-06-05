@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MarketListUIProps } from './MarketList.type';
 
 import useMoney from '../../../../hook/useMoney';
@@ -14,6 +14,8 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
     itemsList,
     itemsListRefetch,
     itemListfetchMore,
+    isSoldout,
+    setIsSoldout
 }) => {
     const countMoney = useMoney()
 
@@ -46,7 +48,10 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
             </S.Best>
             <S.List>
 
-                <h3>판매중상품</h3>
+                <S.MiniTitles>
+                    <S.SaleTitle isShowSold={isSoldout} onClick={() => setIsSoldout(false)}>판매중상품</S.SaleTitle>
+                    <S.SoldTitle isShowSold={isSoldout} onClick={() => setIsSoldout(true)}>판매된상품</S.SoldTitle>
+                </S.MiniTitles>
                 <SearchBarTriggerdByButton refetch={itemsListRefetch} />
                 <S.Items>
 

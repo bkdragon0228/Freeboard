@@ -6,13 +6,17 @@ import MarketListUI from './MarketList.presenter';
 import { IQuery, IQueryFetchUseditemsArgs } from '../../../../commons/types/generated/types';
 
 const MarketList = () => {
+    const [isSearchSoldItem, setIsSearchSoldItem] = useState<boolean>(false)
+
     const {data : marketItems, fetchMore : fetchMarketItemMore, refetch : marketItemsRefetch} = useQuery<Pick<IQuery, 'fetchUseditems'>, IQueryFetchUseditemsArgs>(FETCH_USED_ITEMS, {
         variables :{
             page : 1,
-            isSoldout : false,
+            isSoldout : isSearchSoldItem,
             search : ''
         }
     })
+
+
 
     const {data : bestItems} = useQuery<Pick<IQuery, 'fetchUseditemsOfTheBest'>>(FETCH_USED_ITEMS_OF_THE_BEST)
 
@@ -47,6 +51,8 @@ const MarketList = () => {
             itemsListRefetch={marketItemsRefetch}
             itemListfetchMore={itemListfetchMore}
             bestItemsList={bestItems}
+            isSoldout={isSearchSoldItem}
+            setIsSoldout={setIsSearchSoldItem}
         />
     );
 };

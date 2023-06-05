@@ -150,3 +150,29 @@ export const ItemPrice = styled.div`
     font-size: 24px;
     line-height: 36px;
 `
+
+export const MiniTitles = styled.div`
+    display: flex;
+    column-gap: 1rem;
+`
+
+const MiniTitle = styled.button`
+    width: 90px;
+    font-size: 18px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+`
+export const SaleTitle = styled(MiniTitle)<{
+    isShowSold : boolean
+}>`
+    color: ${(props) => props.isShowSold ? 'lightgray' : 'black'};
+    border-bottom: ${(props) => props.isShowSold ? '' : '2px solid #FFD600'};
+`
+
+export const SoldTitle = styled(MiniTitle)<{
+    isShowSold : boolean
+}>`
+    color: ${(props) => props.isShowSold ? 'black' : 'lightgray'};
+    border-bottom: ${(props) => props.isShowSold ? '2px solid #FFD600' : ''};
+`

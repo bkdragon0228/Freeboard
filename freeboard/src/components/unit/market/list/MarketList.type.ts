@@ -6,4 +6,6 @@ export interface MarketListUIProps {
     itemsListRefetch :  (variables?: Partial<IQueryFetchUseditemsArgs>) => Promise<ApolloQueryResult<Pick<IQuery, "fetchUseditems">>>
     itemListfetchMore : () => void;
     bestItemsList : Pick<IQuery, "fetchUseditemsOfTheBest">;
+    isSoldout : boolean;
+    setIsSoldout : React.Dispatch<React.SetStateAction<boolean>>;
 }

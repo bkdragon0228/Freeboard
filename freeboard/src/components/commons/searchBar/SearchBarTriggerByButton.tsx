@@ -1,12 +1,11 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 
 import styled from '@emotion/styled'
 import DatePickerComponent from '../datePicker/DatePicker';
 
-interface SearchBarProps {
+interface SearchBarTriggerdByButton {
     refetch : any;
     refetchCount? : any;
-    onChangeSearchTerm : (value : string) => void;
 }
 
 const SearchInput = styled.input`
@@ -25,43 +24,44 @@ const SearchIcon = styled.svg`
   transform: translateY(-50%);
 `;
 
-const PeriodInput = styled.input`
-  width: 244px;
-  height: 52px;
-  padding: 14px 16px;
-`;
+const Button = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 16px;
+    background: #000000;
+    color : white;
+    flex-wrap: nowrap;
+    cursor: pointer;
+
+    &:hover {
+        border: 2px solid white;
+    }
+`
 
 
-const SearchBar : React.FC<SearchBarProps> = ({
+const SearchBarTriggerdByButton : React.FC<SearchBarTriggerdByButton> = ({
     refetch,
-    refetchCount,
-    onChangeSearchTerm
+    refetchCount
 }) => {
-    const [debounce, setDebounce] = useState(0)
+    const [searchTerm, setSearchTerm] = useState<string>('')
     const [startDate, setStartDate] = useState(new Date('2020-01-01'))
     const [endDate, setEndDate] = useState(new Date())
 
-    const getDebounce = (callback : () => void, timeout : number = 500) => {
-        if(debounce) window.clearTimeout(debounce)
-        const timer = window.setTimeout(() => {
-          callback()
-        }, timeout)
-        setDebounce(timer)
-    }
+    const onChangeInput = useCallback((value : string) => {
+        setSearchTerm(value)
+    }, [setSearchTerm])
 
-    const onChangeInput = (e : ChangeEvent<HTMLInputElement>) => {
-        getDebounce(() => {
-            onChangeSearchTerm(e.target.value)
-            refetch({
-                search : e.target.value,
-                startDate,
-                endDate,
-            })
-            refetchCount?.({
-                search : e.target.value,
-                startDate,
-                endDate,
-            })
+    const onClickButton = () => {
+        refetch({
+            search : searchTerm,
+            startDate,
+            endDate,
+        })
+        refetchCount?.({
+            search : searchTerm,
+            startDate,
+            endDate,
         })
     }
     return (
@@ -79,15 +79,18 @@ const SearchBar : React.FC<SearchBarProps> = ({
             />
             </SearchIcon>
 
-            <SearchInput placeholder="제목을 검색해주세요." onChange={onChangeInput} />
+            <SearchInput placeholder="제목을 검색해주세요." onChange={(e) => onChangeInput(e.target.value)} />
             <DatePickerComponent
                 endDate={endDate}
                 setEndDate={setEndDate}
                 startDate={startDate}
                 setStartDate={setStartDate}
             />
+            <Button onClick={onClickButton}>
+                <i className="ri-search-line"></i>
+            </Button>
         </div>
     );
 };
 
-export default SearchBar;
+export default SearchBarTriggerdByButton;

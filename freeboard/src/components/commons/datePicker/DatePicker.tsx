@@ -8,7 +8,6 @@ interface DatePickerProps {
     setEndDate : any
 }
 
-
 const DatePickerComponent : React.FC<DatePickerProps>= ({
     endDate,
     startDate,

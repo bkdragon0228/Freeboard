@@ -6,12 +6,14 @@ import useMoney from '../../../../hook/useMoney';
 import * as S from './MarketList.styles'
 import ItemImage from '../../../commons/profileImage';
 import InfiniteScroll from 'react-infinite-scroller';
+import SearchBarTriggerdByButton from '../../../commons/searchBar/SearchBarTriggerByButton';
 
 
 const MarketListUI : React.FC<MarketListUIProps> = ({
     bestItemsList,
     itemsList,
-    itemListfetchMore
+    itemsListRefetch,
+    itemListfetchMore,
 }) => {
     const countMoney = useMoney()
 
@@ -45,6 +47,7 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
             <S.List>
 
                 <h3>판매중상품</h3>
+                <SearchBarTriggerdByButton refetch={itemsListRefetch} />
                 <S.Items>
 
                     <InfiniteScroll
@@ -53,6 +56,9 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
                         hasMore={true}
                         useWindow={false}
                     >
+                        {
+                            !itemsList?.fetchUseditems.length && <h2>찾으시는 상품이 없습니다.</h2>
+                        }
                         {
                             itemsList?.fetchUseditems.map((item) => (
                                 <S.Item key={item?._id}>

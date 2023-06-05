@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { FETCH_USED_ITEMS, FETCH_USED_ITEMS_OF_THE_BEST } from './MarketList.query';
 import { useQuery } from '@apollo/client';
 
@@ -6,7 +6,7 @@ import MarketListUI from './MarketList.presenter';
 import { IQuery, IQueryFetchUseditemsArgs } from '../../../../commons/types/generated/types';
 
 const MarketList = () => {
-    const {data : marketItems, fetchMore : fetchMarketItemMore} = useQuery<Pick<IQuery, 'fetchUseditems'>, IQueryFetchUseditemsArgs>(FETCH_USED_ITEMS, {
+    const {data : marketItems, fetchMore : fetchMarketItemMore, refetch : marketItemsRefetch} = useQuery<Pick<IQuery, 'fetchUseditems'>, IQueryFetchUseditemsArgs>(FETCH_USED_ITEMS, {
         variables :{
             page : 1,
             isSoldout : false,
@@ -44,6 +44,7 @@ const MarketList = () => {
     return (
         <MarketListUI
             itemsList={marketItems}
+            itemsListRefetch={marketItemsRefetch}
             itemListfetchMore={itemListfetchMore}
             bestItemsList={bestItems}
         />

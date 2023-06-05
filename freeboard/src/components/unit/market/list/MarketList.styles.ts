@@ -66,6 +66,7 @@ export const List = styled.div`
     width: 1200px;
     display: flex;
     flex-direction: column;
+    row-gap: 1rem;
 `
 
 export const Items = styled.div`

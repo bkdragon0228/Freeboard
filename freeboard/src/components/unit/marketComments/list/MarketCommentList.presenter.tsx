@@ -3,11 +3,15 @@ import React from 'react';
 import { MarketCommentListUIProps } from './MarketCommentList.type'
 
 import * as S from './MarketCommentList.style'
+import ComboBox from '../../../commons/comboBox/ComboBox';
 
 const MarketCommentListUI : React.FC<MarketCommentListUIProps> = () => {
     return (
         <div>
-            상품 댓글 리스트
+            <ComboBox>
+                <ComboBox.Input />
+                <ComboBox.Button handleSubmit={() => {}}>클릭</ComboBox.Button>
+            </ComboBox>
         </div>
     );
 };

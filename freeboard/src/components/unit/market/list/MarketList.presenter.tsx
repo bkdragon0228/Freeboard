@@ -8,6 +8,7 @@ import ItemImage from '../../../commons/profileImage';
 import InfiniteScroll from 'react-infinite-scroller';
 import SearchBarTriggerdByButton from '../../../commons/searchBar/SearchBarTriggerByButton';
 import { useRouter } from 'next/router';
+import ComboBox from '../../../commons/comboBox/ComboBox';
 
 
 const MarketListUI : React.FC<MarketListUIProps> = ({
@@ -20,6 +21,12 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
 }) => {
     const countMoney = useMoney()
     const router = useRouter()
+
+    const onButtonClick = (value : string) => {
+        itemsListRefetch({
+            search : value,
+        })
+    }
 
     return (
         <S.Container>
@@ -54,7 +61,11 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
                     <S.SaleTitle isShowSold={isSoldout} onClick={() => setIsSoldout(false)}>판매중상품</S.SaleTitle>
                     <S.SoldTitle isShowSold={isSoldout} onClick={() => setIsSoldout(true)}>판매된상품</S.SoldTitle>
                 </S.MiniTitles>
-                <SearchBarTriggerdByButton refetch={itemsListRefetch} />
+                {/* 합성 컴포넌트 */}
+                <ComboBox>
+                    <ComboBox.Input placeholder='제품명을 입력해주세요.' />
+                    <ComboBox.Button handleSubmit={onButtonClick}/>
+                </ComboBox>
                 <S.Items>
 
                     <InfiniteScroll

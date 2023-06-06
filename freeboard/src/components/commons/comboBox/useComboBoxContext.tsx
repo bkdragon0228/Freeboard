@@ -7,7 +7,7 @@ export interface ComboBoxContextProviderProps {
 
 const ComboBoxContext = React.createContext<ComboBoxContextProviderProps>(undefined);
 
-function CounterProvider({ children, value }) {
+function ComboBoxProvider({ children, value }) {
   return (
     <ComboBoxContext.Provider value={value}>{children}</ComboBoxContext.Provider>
   );
@@ -21,4 +21,4 @@ function useComboBoxContext() {
   return context;
 }
 
-export { CounterProvider, useComboBoxContext };
+export { ComboBoxProvider, useComboBoxContext };

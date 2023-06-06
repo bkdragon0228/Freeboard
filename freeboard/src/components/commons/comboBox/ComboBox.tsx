@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { ComboBoxContextProviderProps, CounterProvider } from './useComboBoxContext'
+import { ComboBoxContextProviderProps, ComboBoxProvider } from './useComboBoxContext'
 
 import styled from '@emotion/styled';
 
@@ -28,11 +28,11 @@ const ComboBox : React.FC<PropsWithChildren<ComboBoxProps>> & {
     }
 
     return (
-        <CounterProvider value={providerValue}>
+        <ComboBoxProvider value={providerValue}>
             <StyledComboBox>
                 {children}
             </StyledComboBox>
-        </CounterProvider>
+        </ComboBoxProvider>
     );
 };
 

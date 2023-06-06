@@ -7,6 +7,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
+    border-bottom: 1px solid black;
 `
 
 export const SellerInfo = styled.div`

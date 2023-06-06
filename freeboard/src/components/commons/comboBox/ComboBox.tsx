@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 
 import Input, { ComnoBoxInputProps } from './Input'
 import Button, { ComboBoxButtonProps } from './Button'
+import TextArea, { TextAreaProps } from './TextArea';
 
 interface ComboBoxProps {
     initialValue? : string;
@@ -13,6 +14,7 @@ interface ComboBoxProps {
 const ComboBox : React.FC<PropsWithChildren<ComboBoxProps>> & {
     Input : React.FC<ComnoBoxInputProps>
     Button : React.FC<ComboBoxButtonProps>
+    TextArea : React.FC<TextAreaProps>
 } = ({ children, initialValue = '' }) => {
     const [inputValue, setInputValue] = useState<string>(initialValue)
 
@@ -44,5 +46,6 @@ const StyledComboBox = styled.div`
 
 ComboBox.Input = Input;
 ComboBox.Button = Button;
+ComboBox.TextArea = TextArea;
 
 export default ComboBox;

@@ -21,9 +21,6 @@ export default function BoardDetailUI({
   handleLike : MouseEventHandler<HTMLDivElement>;
   handleDisLike : MouseEventHandler<HTMLDivElement>
 }) {
-
-  console.log(data)
-
   const [isShowModal, setIsShowModal] = useState<boolean>(false)
   useEffect(() => {
 

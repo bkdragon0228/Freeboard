@@ -7,12 +7,17 @@ import ComboBox from '../../../commons/comboBox/ComboBox';
 
 const MarketCommentListUI : React.FC<MarketCommentListUIProps> = () => {
     return (
-        <div>
+        <S.Container>
+            <h2>문의하기</h2>
             <ComboBox>
-                <ComboBox.Input />
-                <ComboBox.Button handleSubmit={() => {}}>클릭</ComboBox.Button>
+                <S.ColWrpper>
+                    <ComboBox.TextArea placeholder='문의 내용을 입력해주세요.' />
+                    <S.InputInfo>
+                        <ComboBox.Button handleSubmit={() => {}}>등록</ComboBox.Button>
+                    </S.InputInfo>
+                </S.ColWrpper>
             </ComboBox>
-        </div>
+        </S.Container>
     );
 };
 

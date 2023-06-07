@@ -6,8 +6,10 @@ import * as S from './MarketItemDetail.style'
 import ProfileImage from '../../../commons/profileImage';
 import useMoney from '../../../../hook/useMoney';
 import Carousel from '../../../commons/Carousel';
+import { Basket } from '../../basket/Basket.type';
 
 const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
+    handleClickBasket,
     detailData
 }) => {
     const getMoney = useMoney()
@@ -49,14 +51,42 @@ const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
         )
     }
 
+    const onClickBasket = useCallback(() => {
+
+        try {
+
+            const item : Basket = {
+                _id : detailData?.fetchUseditem._id,
+                name : detailData?.fetchUseditem.name,
+                seller : {
+                    _id : detailData?.fetchUseditem.seller._id,
+                    name : detailData?.fetchUseditem.seller.name
+                }
+            }
+
+           handleClickBasket(item)
+
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }, [handleClickBasket, detailData])
+
     return (
         <S.Container>
             <S.SellerInfo>
-                <ProfileImage url={`https://storage.googleapis.com/${detailData?.fetchUseditem.seller.picture}`}/>
+                <ProfileImage url={detailData?.fetchUseditem.seller.picture ? `https://storage.googleapis.com/${detailData?.fetchUseditem.seller.picture}` : ''}/>
                 <S.ColWrap>
                     <S.SellerName>{detailData?.fetchUseditem.seller.name}</S.SellerName>
                     <S.Created>{`Date : ${getCreatedDate()}`}</S.Created>
                 </S.ColWrap>
+                <div>
+                    <S.BaketButton onClick={onClickBasket}>
+                        <i className="ri-shopping-bag-line"></i>
+                    </S.BaketButton>
+                </div>
             </S.SellerInfo>
             <S.ItemInfo>
                 <S.ItemTitle>

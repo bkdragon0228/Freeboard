@@ -89,3 +89,12 @@ export const Tag = styled.div`
     color: lightgray;
     font-size: 14px;
 `
+
+export const BaketButton = styled.button`
+    width: 100px;
+    border: none;
+    cursor: pointer;
+    background-color: white;
+    color : black;
+    font-size: 20px;
+`

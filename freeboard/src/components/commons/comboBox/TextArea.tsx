@@ -9,7 +9,6 @@ export interface TextAreaProps {
 const TextArea : React.FC<TextAreaProps> = ({
     placeholder = '내용을 입력해주새요.'
 }) => {
-
     const {value, handler} = useComboBoxContext()
 
     return (

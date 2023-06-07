@@ -8,10 +8,11 @@ export interface ComboBoxButtonProps {
 }
 
 const Button : React.FC<ComboBoxButtonProps> = ({children, handleSubmit}) => {
-    const { value } = useComboBoxContext()
+    const { value , handler} = useComboBoxContext()
 
     const onSumbit = useCallback(() => {
         handleSubmit(value)
+        handler('')
     }, [handleSubmit, value])
 
     if(children) {

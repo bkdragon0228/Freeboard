@@ -11,6 +11,12 @@ export const FETCH_USED_ITEM_QUESTIONS = gql`
         ) {
             _id
             contents
+            user {
+                name
+                picture
+                _id
+            }
+            createdAt
         }
     }
 `

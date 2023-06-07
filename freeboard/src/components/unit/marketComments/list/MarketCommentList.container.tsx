@@ -15,9 +15,10 @@ const MarketCommentList = () => {
         }
     })
 
-    console.log('질문 데이터', qusetionData)
     return (
-       <MarketCommentListUI />
+       <MarketCommentListUI
+            questionData={qusetionData}
+       />
     );
 };
 

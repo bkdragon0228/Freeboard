@@ -5,10 +5,15 @@ import { useMutation } from '@apollo/client';
 import MarketCommentWriteUI from './MarketCommentWrite.presenter';
 import { IMutation, IMutationCreateUseditemQuestionArgs } from '../../../../commons/types/generated/types';
 import { useRouter } from 'next/router';
+import { FETCH_USED_ITEM_QUESTIONS } from '../list/MarketCommentList.query';
 
 const MarketCommentWrite = () => {
     const router = useRouter()
-    const [createQuestion] = useMutation<Pick<IMutation, 'createUseditemQuestion'>, IMutationCreateUseditemQuestionArgs>(CREATED_USED_ITEM_QUESTION)
+    const [createQuestion] = useMutation<Pick<IMutation, 'createUseditemQuestion'>, IMutationCreateUseditemQuestionArgs>(CREATED_USED_ITEM_QUESTION, {
+        refetchQueries : [
+            {query : FETCH_USED_ITEM_QUESTIONS, variables : {page : 1, useditemId : router.query.id as string}},
+        ]
+    })
 
     const handleSubmit = async (value : string) => {
         try {

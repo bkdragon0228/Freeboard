@@ -29,6 +29,7 @@ const NAVIGATION_MENUS = [
     {title : '자유게시판', path : '/boards'},
     {title : '중고마켓', path : '/market'},
     {title : '마이페이지', path : '/user/my'},
+    {title : '장바구니', path : '/basket'}
 ]
 
 export default function LayoutNavigation() {

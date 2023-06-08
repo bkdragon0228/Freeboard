@@ -59,3 +59,10 @@ export const EditBtn = styled.button`
     background-color: transparent;
     cursor: pointer;
 `
+
+export const ReplyBtn = styled.button`
+    font-size: 18px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+`

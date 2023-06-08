@@ -6,4 +6,6 @@ export interface MarketCommentListUIProps {
     handleClickUpdate : (id: string) => (updateValue: string) => void;
     isEdit : boolean;
     handleEdit : () => void;
+    isReply : boolean;
+    handleRelpy : () => void;
 }

@@ -1,11 +1,13 @@
 import React, { useCallback } from 'react';
-import { IUseditemQuestion } from '../../../../../commons/types/generated/types';
+import { IQuery, IQueryFetchUseditemQuestionAnswersArgs, IUseditemQuestion } from '../../../../../commons/types/generated/types';
 
 import * as S from '../MarketCommentList.style'
 import ProfileImage from '../../../../commons/profileImage';
 import ComboBox from '../../../../commons/comboBox/ComboBox';
 import useDate from '../../../../../hook/useDate';
 import useUser from '../../../../../hook/useUser';
+import { useQuery } from '@apollo/client';
+import { FETCH_USED_ITEM_QUESTION_ANSWERS } from '../MarketCommentList.query';
 
 interface QustionProps {
     question : IUseditemQuestion;
@@ -26,6 +28,12 @@ const Question : React.FC<QustionProps>= ({
     isReply,
     handleRelpy
 }) => {
+    const {data : answersData} = useQuery<Pick<IQuery, 'fetchUseditemQuestionAnswers'>, IQueryFetchUseditemQuestionAnswersArgs>(FETCH_USED_ITEM_QUESTION_ANSWERS, {
+        variables : {
+            page : 1,
+            useditemQuestionId : question?._id
+        }
+    })
     const getDate = useDate()
     const {data : userData} = useUser()
     const getEdit = useCallback((id : string) => {
@@ -78,21 +86,13 @@ const Question : React.FC<QustionProps>= ({
                 {
                     renderByisEdit(isEdit, question?.contents, question?.createdAt, question?._id)
                 }
-                {/* {
-                    isReply && (
+                <div>
+                    {answersData?.fetchUseditemQuestionAnswers.map((answer) => (
                         <div>
-                            {answersData?.fetchUseditemQuestionAnswers.map((answer) => (
-                                <>
-                                    {currentQuestionId === question?._id && (
-                                        <div>
-                                            {answer?.contents}
-                                        </div>
-                                    )}
-                                </>
-                            ))}
+                            {answer?.contents}
                         </div>
-                    )
-                } */}
+                    ))}
+                </div>
             </S.ColWrapper>
         </S.RowWrapper>
         <S.RowWrapper>

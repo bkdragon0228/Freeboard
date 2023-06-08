@@ -17,7 +17,7 @@ export const Question = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom : 1px solid black;
+    border-bottom : 1px solid lightgray;
 `
 
 export const RowWrapper = styled.div`
@@ -30,4 +30,32 @@ export const ColWrapper = styled.div`
     display: flex;
     flex-direction: column;
     row-gap: .5rem;
+`
+
+export const Name = styled.div`
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000;
+`
+
+export const Date = styled.div`
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #BDBDBD;
+`
+
+export const DeleteBtn = styled.button`
+    font-size: 18px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+`
+
+export const EditBtn = styled.button`
+    font-size: 18px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 `

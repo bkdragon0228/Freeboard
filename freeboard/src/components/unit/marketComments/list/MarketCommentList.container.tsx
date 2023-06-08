@@ -1,9 +1,9 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { FETCH_USED_ITEM_QUESTIONS } from './MarketCommentList.query';
+import { useQuery, useMutation } from '@apollo/client';
+import { FETCH_USED_ITEM_QUESTIONS, DELETE_USED_ITEM_QUESTION } from './MarketCommentList.query';
 
 import MarketCommentListUI from './MarketCommentList.presenter';
-import { IQuery, IQueryFetchUseditemQuestionsArgs } from '../../../../commons/types/generated/types';
+import { IMutation, IMutationDeleteUseditemQuestionArgs, IQuery, IQueryFetchUseditemQuestionsArgs } from '../../../../commons/types/generated/types';
 import { useRouter } from 'next/router';
 
 const MarketCommentList = () => {
@@ -15,9 +15,25 @@ const MarketCommentList = () => {
         }
     })
 
+    const [deleteQuestion] = useMutation<Pick<IMutation , 'deleteUseditemQuestion'>, IMutationDeleteUseditemQuestionArgs>(DELETE_USED_ITEM_QUESTION, {
+        refetchQueries : [
+            {query : FETCH_USED_ITEM_QUESTIONS, variables : {page : 1, useditemId : router.query.id as string}}
+        ]
+    })
+
+    const handleClickDelete = (id : string) => {
+        alert('질문을 삭제하시겠습니까?')
+        deleteQuestion({
+            variables : {
+                useditemQuestionId : id
+            }
+        })
+    }
+
     return (
        <MarketCommentListUI
             questionData={qusetionData}
+            handleClickDelete={handleClickDelete}
        />
     );
 };

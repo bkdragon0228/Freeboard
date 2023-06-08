@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { FETCH_USED_ITEM_QUESTIONS, DELETE_USED_ITEM_QUESTION } from './MarketCommentList.query';
+import { FETCH_USED_ITEM_QUESTIONS, DELETE_USED_ITEM_QUESTION, UPDATE_USED_ITEM_QUESTION } from './MarketCommentList.query';
 
 import MarketCommentListUI from './MarketCommentList.presenter';
-import { IMutation, IMutationDeleteUseditemQuestionArgs, IQuery, IQueryFetchUseditemQuestionsArgs } from '../../../../commons/types/generated/types';
+import { IMutation, IMutationDeleteUseditemQuestionArgs, IMutationUpdateUseditemQuestionArgs, IQuery, IQueryFetchUseditemQuestionsArgs } from '../../../../commons/types/generated/types';
 import { useRouter } from 'next/router';
 
 const MarketCommentList = () => {
     const router = useRouter()
+    const [isEdit, setIsEdit] = useState<boolean>(false)
     const {data : qusetionData} = useQuery<Pick<IQuery, 'fetchUseditemQuestions'>, IQueryFetchUseditemQuestionsArgs>(FETCH_USED_ITEM_QUESTIONS, {
         variables : {
             useditemId : router.query.id as string,
@@ -30,10 +31,39 @@ const MarketCommentList = () => {
         })
     }
 
+    const [updateQuestion] = useMutation<Pick<IMutation, 'updateUseditemQuestion'>, IMutationUpdateUseditemQuestionArgs>(UPDATE_USED_ITEM_QUESTION, {
+        refetchQueries : [
+            {query : FETCH_USED_ITEM_QUESTIONS, variables : {page : 1, useditemId : router.query.id as string}}
+        ],
+        onCompleted : () => {
+            setIsEdit(false)
+        }
+    })
+
+    const handleClickUpdate = (id : string) => {
+        return (updateValue : string) => {
+            updateQuestion({
+                variables : {
+                    updateUseditemQuestionInput : {
+                        contents : updateValue
+                    },
+                    useditemQuestionId : id
+                }
+            })
+        }
+    }
+
+    const handleEdit = () => {
+        setIsEdit((prev) => !prev)
+    }
+
     return (
        <MarketCommentListUI
             questionData={qusetionData}
             handleClickDelete={handleClickDelete}
+            handleClickUpdate={handleClickUpdate}
+            isEdit={isEdit}
+            handleEdit={handleEdit}
        />
     );
 };

@@ -17,7 +17,7 @@ export const Question = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom : 1px solid lightgray;
+    /* border-bottom : 1px solid lightgray; */
 `
 
 export const RowWrapper = styled.div`
@@ -65,4 +65,10 @@ export const ReplyBtn = styled.button`
     border: none;
     background-color: transparent;
     cursor: pointer;
+`
+
+export const Answers = styled.div`
+    position: relative;
+    margin-top: 1rem;
+    left : 2rem;
 `

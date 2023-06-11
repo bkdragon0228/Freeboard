@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
-import { IQuery, IQueryFetchUseditemQuestionAnswersArgs, IUseditemQuestion } from '../../../../../commons/types/generated/types';
-import { useQuery } from '@apollo/client';
-import { FETCH_USED_ITEM_QUESTION_ANSWERS } from '../MarketCommentList.query';
+import React, { useCallback, useState } from 'react';
+import { IMutation, IMutationCreateUseditemQuestionAnswerArgs, IQuery, IQueryFetchUseditemQuestionAnswersArgs, IUseditemQuestion } from '../../../../../commons/types/generated/types';
+import { useMutation, useQuery } from '@apollo/client';
+import { FETCH_USED_ITEM_QUESTION_ANSWERS, CREATE_USED_ITEM_QUESTION_ANSWER } from '../MarketCommentList.query';
 
 import * as S from '../MarketCommentList.style'
 import ProfileImage from '../../../../commons/profileImage';
@@ -10,15 +10,12 @@ import useDate from '../../../../../hook/useDate';
 import useUser from '../../../../../hook/useUser';
 import Answers from './Answers';
 
-
 interface QustionProps {
     question : IUseditemQuestion;
     isEdit : boolean;
     handleClickDelete : (id : string) => void;
     handleClickUpdate : (id: string) => (updateValue: string) => void;
     handleEdit : () => void;
-    isReply : boolean;
-    handleRelpy : () => void;
 }
 
 const Question : React.FC<QustionProps>= ({
@@ -27,17 +24,43 @@ const Question : React.FC<QustionProps>= ({
     handleEdit,
     handleClickDelete,
     handleClickUpdate,
-    isReply,
-    handleRelpy
 }) => {
+    const getDate = useDate()
+    const {data : userData} = useUser()
+    const [isReply, setIsReply] = useState<boolean>(false)
+
+    const handleReply = () => {
+        setIsReply((prev) => !prev)
+    }
+
+    const [createAnswer] = useMutation<Pick<IMutation, 'createUseditemQuestionAnswer'>, IMutationCreateUseditemQuestionAnswerArgs>(CREATE_USED_ITEM_QUESTION_ANSWER, {
+        refetchQueries : [
+            {query : FETCH_USED_ITEM_QUESTION_ANSWERS , variables : {page : 1 , useditemQuestionId : question?._id }}
+        ],
+        onCompleted : () => {
+            handleReply()
+        }
+    })
+
+    const handleAnswer = useCallback((value : string) => {
+        createAnswer({
+            variables : {
+                createUseditemQuestionAnswerInput : {
+                    contents : value,
+                },
+                useditemQuestionId : question?._id
+            }
+        })
+    }, [createAnswer, question?._id])
+
     const {data : answersData} = useQuery<Pick<IQuery, 'fetchUseditemQuestionAnswers'>, IQueryFetchUseditemQuestionAnswersArgs>(FETCH_USED_ITEM_QUESTION_ANSWERS, {
         variables : {
             page : 1,
             useditemQuestionId : question?._id
         }
     })
-    const getDate = useDate()
-    const {data : userData} = useUser()
+
+
     const getEdit = useCallback((id : string) => {
 
         if(id === userData?.fetchUserLoggedIn._id) {
@@ -92,7 +115,7 @@ const Question : React.FC<QustionProps>= ({
                     </S.ColWrapper>
                 </S.RowWrapper>
                 <S.RowWrapper>
-                    <S.ReplyBtn id={question?._id} >
+                    <S.ReplyBtn id={question?._id} onClick={handleReply}>
                         <i className="ri-question-answer-line"></i>
                     </S.ReplyBtn>
                     {
@@ -107,11 +130,21 @@ const Question : React.FC<QustionProps>= ({
                             </S.RowWrapper>
 
                         )
-
                     }
-
                 </S.RowWrapper>
             </S.Question>
+            <div>
+                {
+                    isReply && (
+                        <ComboBox>
+                            <S.ColWrapper>
+                                <ComboBox.TextArea width={1000} placeholder='답글을 입력해주세요.' />
+                                <ComboBox.Button handleSubmit={handleAnswer}>답글달기</ComboBox.Button>
+                            </S.ColWrapper>
+                        </ComboBox>
+                    )
+                }
+            </div>
             <S.Answers>
                 <Answers answersData={answersData}/>
             </S.Answers>

@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 const MarketCommentList = () => {
     const router = useRouter()
     const [isEdit, setIsEdit] = useState<boolean>(false)
-    const [isReply, setIsReply] = useState<boolean>(false)
     const {data : qusetionData} = useQuery<Pick<IQuery, 'fetchUseditemQuestions'>, IQueryFetchUseditemQuestionsArgs>(FETCH_USED_ITEM_QUESTIONS, {
         variables : {
             useditemId : router.query.id as string,
@@ -58,9 +57,6 @@ const MarketCommentList = () => {
         setIsEdit((prev) => !prev)
     }
 
-    const handleRelpy = () => {
-        setIsReply((prev) => !prev)
-    }
 
     return (
        <MarketCommentListUI
@@ -69,8 +65,6 @@ const MarketCommentList = () => {
             handleClickUpdate={handleClickUpdate}
             isEdit={isEdit}
             handleEdit={handleEdit}
-            isReply={isReply}
-            handleRelpy={handleRelpy}
        />
     );
 };

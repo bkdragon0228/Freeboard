@@ -10,8 +10,6 @@ const MarketCommentListUI : React.FC<MarketCommentListUIProps> = ({
     handleClickUpdate,
     handleEdit,
     isEdit,
-    isReply,
-    handleRelpy
 }) => {
 
     return (
@@ -25,8 +23,7 @@ const MarketCommentListUI : React.FC<MarketCommentListUIProps> = ({
                             handleClickUpdate={handleClickUpdate}
                             handleEdit={handleEdit}
                             isEdit={isEdit}
-                            isReply={isReply}
-                            handleRelpy={handleRelpy}
+
                         />
                     ))
                 }

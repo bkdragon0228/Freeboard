@@ -2,9 +2,14 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from '@apollo/client';
 import { IMutation, IMutationCreateUserArgs } from '../../../commons/types/generated/types';
+import { yupResolver } from '@hookform/resolvers/yup'
 
-
+import * as yup from 'yup'
 import styled from '@emotion/styled';
+
+import { ErrorMessage } from '@hookform/error-message';
+import StyledMessage from '../ErrorMessage';
+
 
 const CREATE_USER = gql`
     mutation CreateUser($createUserInput : CreateUserInput!){
@@ -19,6 +24,12 @@ const CREATE_USER = gql`
         }
     }
 `
+
+const schema = yup.object({
+    name : yup.string().required('이름을 입력해주세요.'),
+    email : yup.string().email('이메일 형식을 사용해주세요.').required('이메일을 입력해주세요.'),
+    password : yup.string().min(8, '비밀번호는 8자 이상이여야 합니다.').required('비밀번호를 입력해주세요.'),
+})
 
 interface RegisterModalProps {
     isOpen : boolean;
@@ -56,19 +67,29 @@ export const Inputs = styled.div`
     background-color: black;
 `
 
+export const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+`
+
 const RegisterModal : React.FC<RegisterModalProps>= ({
     isOpen,
     setIsOpen,
     setIsOpenLogin
 }) => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<FormProps>();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<FormProps>({
+        criteriaMode : 'all',
+        resolver : yupResolver(schema),
+        mode : 'onChange'
+    });
     const [createUser] = useMutation<Pick<IMutation, 'createUser'>, IMutationCreateUserArgs>(CREATE_USER, {
         onCompleted : () => {
             setIsOpen(false)
             setIsOpenLogin(true)
         }
     })
-    const onClick = async (formData : FormProps) => {
+    const onSubmit = async (formData : FormProps) => {
         try {
             const response = await createUser({
                 variables : {
@@ -94,13 +115,43 @@ const RegisterModal : React.FC<RegisterModalProps>= ({
         <ModalContainer>
             <Inputs >
                 <button onClick={onClickClose}>X</button>
-                <label>Name</label>
-                <input {...register('name', {required : 'this is requred'})}/>
-                <label>Email</label>
-                <input {...register('email', {required : 'this is requred'})}/>
-                <label>Password</label>
-                <input {...register('password', {required : 'this is requred'})}/>
-                <button onClick={handleSubmit(onClick)}>Sign Up</button>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                    <label>Name</label>
+                    <input {...register('name')}/>
+                     <ErrorMessage
+                            errors={errors}
+                            name='name'
+                            render={({messages}) =>
+                            messages && Object.entries(messages).map(([type, message]) => (
+                                <StyledMessage key={type} color='red'>{message}</StyledMessage>
+                            ))
+                        }
+                    />
+                    <label>Email</label>
+                    <input type='text' {...register('email')}/>
+                    <ErrorMessage
+                            errors={errors}
+                            name='email'
+                            render={({messages}) =>
+                            messages && Object.entries(messages).map(([type, message]) => (
+                                <StyledMessage key={type} color='red'>{message}</StyledMessage>
+                            ))
+                        }
+                    />
+                    <label>Password</label>
+                    <input type='password' {...register('password')}/>
+                    <ErrorMessage
+                            errors={errors}
+                            name='password'
+                            render={({messages}) =>
+                            messages && Object.entries(messages).map(([type, message]) => (
+                                <StyledMessage key={type} color='red'>{message}</StyledMessage>
+                            ))
+                        }
+                    />
+                    <button type='submit'>Sign In</button>
+                </Form>
+
             </Inputs>
         </ModalContainer>
     );

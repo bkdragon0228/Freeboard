@@ -7,9 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import styled from '@emotion/styled';
 
-import { ErrorMessage } from '@hookform/error-message';
-import StyledMessage from '../ErrorMessage';
 import Modal from './Modal';
+import Input from '../Input';
 
 
 const CREATE_USER = gql`
@@ -58,20 +57,30 @@ export const ModalContainer = styled.div`
     color : white;
 `
 
-export const Inputs = styled.div`
-    padding: 20px;
-    width: 500px;
-    height: 700px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    background-color: black;
-`
-
 export const Form = styled.form`
     display: flex;
     flex-direction: column;
-    row-gap: 1rem;
+    row-gap: 2rem;
+    padding: 20px;
+    text-align: center;
+`
+export const RowWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    column-gap: 1rem;
+`
+
+export const Button = styled.button`
+    width: 150px;
+    padding: 20px;
+    text-align: center;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+
+    &:hover {
+        border: 1px solid lightgray;
+    }
 `
 
 const RegisterModal : React.FC<RegisterModalProps>= ({
@@ -79,72 +88,59 @@ const RegisterModal : React.FC<RegisterModalProps>= ({
     setIsOpen,
     setIsOpenLogin
 }) => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<FormProps>({
+    const { register, handleSubmit, watch, formState } = useForm<FormProps>({
         criteriaMode : 'all',
         resolver : yupResolver(schema),
         mode : 'onChange'
-    });
+    })
+
     const [createUser] = useMutation<Pick<IMutation, 'createUser'>, IMutationCreateUserArgs>(CREATE_USER, {
         onCompleted : () => {
             setIsOpen(false)
             setIsOpenLogin(true)
         }
     })
+
     const onSubmit = async (formData : FormProps) => {
         try {
-            const response = await createUser({
+            await createUser({
                 variables : {
                     createUserInput : formData
                 }
             })
-
 
         } catch (error) {
             console.log(error)
         }
     }
 
-    const onClickClose = () => {
-        setIsOpen(false)
-    }
-
     const bodyContents = (
         <>
             <Form onSubmit={handleSubmit(onSubmit)}>
-                <label>Name</label>
-                <input {...register('name')}/>
-                    <ErrorMessage
-                        errors={errors}
-                        name='name'
-                        render={({messages}) =>
-                        messages && Object.entries(messages).map(([type, message]) => (
-                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                        ))
-                    }
+                <Input<FormProps>
+                    formState={formState}
+                    name='name'
+                    placeholder='이름'
+                    register={register}
+                    type='text'
                 />
-                <label>Email</label>
-                <input type='text' {...register('email')}/>
-                <ErrorMessage
-                        errors={errors}
-                        name='email'
-                        render={({messages}) =>
-                        messages && Object.entries(messages).map(([type, message]) => (
-                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                        ))
-                    }
+                <Input<FormProps>
+                    formState={formState}
+                    name='email'
+                    placeholder='이메일'
+                    register={register}
+                    type='text'
                 />
-                <label>Password</label>
-                <input type='password' {...register('password')}/>
-                <ErrorMessage
-                        errors={errors}
-                        name='password'
-                        render={({messages}) =>
-                        messages && Object.entries(messages).map(([type, message]) => (
-                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                        ))
-                    }
+                <Input<FormProps>
+                    formState={formState}
+                    name='password'
+                    placeholder='비밀번호'
+                    register={register}
+                    type='password'
                 />
-                <button type='submit'>Sign In</button>
+                <RowWrapper>
+                    <Button type='submit'>회원가입</Button>
+                </RowWrapper>
             </Form>
         </>
     )

@@ -8,10 +8,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import * as yup from 'yup'
 
-import { Inputs, ModalContainer, Form } from './registerModal';
-import { ErrorMessage } from '@hookform/error-message';
-import StyledMessage from '../ErrorMessage';
+import { Form, RowWrapper, Button } from './registerModal';
+
 import Modal from './Modal';
+import Input from '../Input';
 
 const LOGIN_USER = gql`
     mutation LoginUser ($email : String!, $password : String!) {
@@ -24,6 +24,7 @@ const LOGIN_USER = gql`
 interface LoginModalProps {
     isOpen : boolean;
     setIsOpen : (boolean : boolean) => void;
+    setIsOpenRegister : (boolean : boolean) => void;
 }
 
 interface FormProps {
@@ -38,10 +39,11 @@ const schema = yup.object({
 
 const LoginModal : React.FC<LoginModalProps>= ({
     isOpen,
-    setIsOpen
+    setIsOpen,
+    setIsOpenRegister
 }) => {
     const setAccessToken = useSetRecoilState(tokenState)
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<FormProps>({
+    const { register, handleSubmit, watch, formState } = useForm<FormProps>({
         criteriaMode : 'all',
         resolver : yupResolver(schema),
         mode : 'onChange'
@@ -54,11 +56,12 @@ const LoginModal : React.FC<LoginModalProps>= ({
             setAccessToken(data.loginUser.accessToken)
         }
     })
+
     const onSubmit = async (data : FormProps) => {
 
         console.log(data)
         try {
-            const response = await loginUser({
+            await loginUser({
                 variables : {
                     email : data.email,
                     password : data.password
@@ -69,36 +72,33 @@ const LoginModal : React.FC<LoginModalProps>= ({
             console.log(error)
         }
     }
-    const onClickClose = () => {
+
+    const onClickRegister = () => {
         setIsOpen(false)
+        setIsOpenRegister(true)
     }
 
     const bodyContents = (
         <>
             <Form onSubmit={handleSubmit(onSubmit)}>
-                <label>Email</label>
-                <input type='text' {...register('email')}/>
-                <ErrorMessage
-                        errors={errors}
-                        name='email'
-                        render={({messages}) =>
-                        messages && Object.entries(messages).map(([type, message]) => (
-                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                        ))
-                    }
+                <Input<FormProps>
+                    formState={formState}
+                    name='email'
+                    placeholder='이메일'
+                    register={register}
+                    type='text'
                 />
-                <label>Password</label>
-                <input type='password' {...register('password')}/>
-                <ErrorMessage
-                        errors={errors}
-                        name='password'
-                        render={({messages}) =>
-                        messages && Object.entries(messages).map(([type, message]) => (
-                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                        ))
-                    }
+                <Input<FormProps>
+                    formState={formState}
+                    name='password'
+                    placeholder='비밀번호'
+                    register={register}
+                    type='text'
                 />
-                <button type='submit'>Sign In</button>
+                <RowWrapper>
+                    <Button type='submit'>로그인</Button>
+                    <Button type='button' onClick={onClickRegister}>회원가입</Button>
+                </RowWrapper>
             </Form>
         </>
     )
@@ -110,7 +110,6 @@ const LoginModal : React.FC<LoginModalProps>= ({
             isOpen={isOpen}
             setIsOpen={setIsOpen}
         />
-
     );
 };
 

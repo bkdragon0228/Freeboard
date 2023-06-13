@@ -13,7 +13,6 @@ import LoginModal from '../modal/loginModal'
 export default function Layout(props : PropsWithChildren<{}>) {
   const [isOpenLogin, setIsOpenLogin] = useRecoilState(isOpenStateBySign('login'))
   const [isOpenRigster, setIsOpenRegister] = useRecoilState(isOpenStateBySign('register'))
-  console.log(isOpenRigster)
   return (
     <>
         <LayoutHeader />
@@ -22,7 +21,7 @@ export default function Layout(props : PropsWithChildren<{}>) {
             {props.children}
         </div>
         <RegisterModal isOpen={isOpenRigster} setIsOpen={setIsOpenRegister} setIsOpenLogin={setIsOpenLogin}/>
-        <LoginModal isOpen={isOpenLogin} setIsOpen={(setIsOpenLogin)}/>
+        <LoginModal isOpen={isOpenLogin} setIsOpen={(setIsOpenLogin)} setIsOpenRegister={(setIsOpenRegister)}/>
     </>
   )
 }

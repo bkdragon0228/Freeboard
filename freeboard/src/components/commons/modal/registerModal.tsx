@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 
 import { ErrorMessage } from '@hookform/error-message';
 import StyledMessage from '../ErrorMessage';
+import Modal from './Modal';
 
 
 const CREATE_USER = gql`
@@ -107,53 +108,56 @@ const RegisterModal : React.FC<RegisterModalProps>= ({
         setIsOpen(false)
     }
 
-    if(!isOpen) {
-        return null;
-    }
+    const bodyContents = (
+        <>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <label>Name</label>
+                <input {...register('name')}/>
+                    <ErrorMessage
+                        errors={errors}
+                        name='name'
+                        render={({messages}) =>
+                        messages && Object.entries(messages).map(([type, message]) => (
+                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
+                        ))
+                    }
+                />
+                <label>Email</label>
+                <input type='text' {...register('email')}/>
+                <ErrorMessage
+                        errors={errors}
+                        name='email'
+                        render={({messages}) =>
+                        messages && Object.entries(messages).map(([type, message]) => (
+                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
+                        ))
+                    }
+                />
+                <label>Password</label>
+                <input type='password' {...register('password')}/>
+                <ErrorMessage
+                        errors={errors}
+                        name='password'
+                        render={({messages}) =>
+                        messages && Object.entries(messages).map(([type, message]) => (
+                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
+                        ))
+                    }
+                />
+                <button type='submit'>Sign In</button>
+            </Form>
+        </>
+    )
+
+
 
     return (
-        <ModalContainer>
-            <Inputs >
-                <button onClick={onClickClose}>X</button>
-                <Form onSubmit={handleSubmit(onSubmit)}>
-                    <label>Name</label>
-                    <input {...register('name')}/>
-                     <ErrorMessage
-                            errors={errors}
-                            name='name'
-                            render={({messages}) =>
-                            messages && Object.entries(messages).map(([type, message]) => (
-                                <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                            ))
-                        }
-                    />
-                    <label>Email</label>
-                    <input type='text' {...register('email')}/>
-                    <ErrorMessage
-                            errors={errors}
-                            name='email'
-                            render={({messages}) =>
-                            messages && Object.entries(messages).map(([type, message]) => (
-                                <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                            ))
-                        }
-                    />
-                    <label>Password</label>
-                    <input type='password' {...register('password')}/>
-                    <ErrorMessage
-                            errors={errors}
-                            name='password'
-                            render={({messages}) =>
-                            messages && Object.entries(messages).map(([type, message]) => (
-                                <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                            ))
-                        }
-                    />
-                    <button type='submit'>Sign In</button>
-                </Form>
-
-            </Inputs>
-        </ModalContainer>
+        <Modal
+            label='회원가입'
+            bodyContents={bodyContents}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+        />
     );
 };
 

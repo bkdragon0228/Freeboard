@@ -1,8 +1,9 @@
-import React, { PropsWithChildren, ReactElement } from 'react';
+import React, { PropsWithChildren, ReactElement, useState } from 'react';
 
 import styled from '@emotion/styled';
 import useDetectClose from '../../hook/useDetectClose';
 import { css } from '@emotion/css';
+import { boolean } from 'yup';
 
 const Container = styled.div`
     position: relative;
@@ -45,12 +46,16 @@ const Dropdown : React.FC<PropsWithChildren<{bodyContent : ReactElement}>> = ({
     children,
     bodyContent
 }) => {
-    const {isOpen, ref, removeHandler} = useDetectClose(false);
+    const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
+    const handleDropDownOpen = (boolean : boolean) => {
+        setIsDropDownOpen(boolean)
+    }
+    const {isOpen, ref} = useDetectClose(isDropDownOpen, handleDropDownOpen);
 
     console.log(isOpen)
     return (
         <Container>
-            <Button ref={ref} onClick={removeHandler}>{children}</Button>
+            <Button ref={ref} onClick={() => setIsDropDownOpen((prev) => !prev)}>{children}</Button>
             <Contents isDropped={isOpen}>
                 {bodyContent}
             </Contents>

@@ -11,6 +11,7 @@ import * as yup from 'yup'
 import { Inputs, ModalContainer, Form } from './registerModal';
 import { ErrorMessage } from '@hookform/error-message';
 import StyledMessage from '../ErrorMessage';
+import Modal from './Modal';
 
 const LOGIN_USER = gql`
     mutation LoginUser ($email : String!, $password : String!) {
@@ -72,42 +73,44 @@ const LoginModal : React.FC<LoginModalProps>= ({
         setIsOpen(false)
     }
 
-    if(!isOpen) {
-        return null;
-    }
+    const bodyContents = (
+        <>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <label>Email</label>
+                <input type='text' {...register('email')}/>
+                <ErrorMessage
+                        errors={errors}
+                        name='email'
+                        render={({messages}) =>
+                        messages && Object.entries(messages).map(([type, message]) => (
+                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
+                        ))
+                    }
+                />
+                <label>Password</label>
+                <input type='password' {...register('password')}/>
+                <ErrorMessage
+                        errors={errors}
+                        name='password'
+                        render={({messages}) =>
+                        messages && Object.entries(messages).map(([type, message]) => (
+                            <StyledMessage key={type} color='red'>{message}</StyledMessage>
+                        ))
+                    }
+                />
+                <button type='submit'>Sign In</button>
+            </Form>
+        </>
+    )
 
     return (
-        <ModalContainer>
-            <Inputs >
-                <button onClick={onClickClose}>X</button>
-                <Form onSubmit={handleSubmit(onSubmit)}>
-                    <label>Email</label>
-                    <input type='text' {...register('email')}/>
-                    <ErrorMessage
-                            errors={errors}
-                            name='email'
-                            render={({messages}) =>
-                            messages && Object.entries(messages).map(([type, message]) => (
-                                <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                            ))
-                        }
-                    />
-                    <label>Password</label>
-                    <input type='password' {...register('password')}/>
-                    <ErrorMessage
-                            errors={errors}
-                            name='password'
-                            render={({messages}) =>
-                            messages && Object.entries(messages).map(([type, message]) => (
-                                <StyledMessage key={type} color='red'>{message}</StyledMessage>
-                            ))
-                        }
-                    />
-                    <button type='submit'>Sign In</button>
-                </Form>
+        <Modal
+            label='로그인'
+            bodyContents={bodyContents}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+        />
 
-            </Inputs>
-        </ModalContainer>
     );
 };
 

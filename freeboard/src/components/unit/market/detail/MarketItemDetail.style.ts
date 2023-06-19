@@ -83,6 +83,8 @@ export const Content = styled.div`
 export const Tags = styled.div`
     display: flex;
     column-gap: 1.2rem;
+    border-bottom : 1px solid black;
+    padding-bottom : 20px;
 `
 
 export const Tag = styled.div`

@@ -7,6 +7,7 @@ import ProfileImage from '../../../commons/profileImage';
 import useMoney from '../../../../hook/useMoney';
 import Carousel from '../../../commons/Carousel';
 import { Basket } from '../../basket/Basket.type';
+import Map from '../../../commons/kakaoMap';
 
 const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
     handleClickBasket,
@@ -52,9 +53,7 @@ const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
     }
 
     const onClickBasket = useCallback(() => {
-
         try {
-
             const item : Basket = {
                 _id : detailData?.fetchUseditem._id,
                 name : detailData?.fetchUseditem.name,
@@ -64,9 +63,7 @@ const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
                 }
             }
 
-           handleClickBasket(item)
-
-
+            handleClickBasket(item)
         } catch (error) {
             console.log(error)
         }
@@ -74,6 +71,7 @@ const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
 
     }, [handleClickBasket, detailData])
 
+    console.log(detailData)
     return (
         <S.Container>
             <S.SellerInfo>
@@ -112,6 +110,10 @@ const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
                     ))
                 }
             </S.Tags>
+            <Map
+                lat={detailData?.fetchUseditem.useditemAddress?.lat}
+                lng={detailData?.fetchUseditem?.useditemAddress?.lng}
+            />
         </S.Container>
     );
 };

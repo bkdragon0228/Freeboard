@@ -9,11 +9,7 @@ import { FETCH_USED_ITEM_QUESTIONS } from '../list/MarketCommentList.query';
 
 const MarketCommentWrite = () => {
     const router = useRouter()
-    const [createQuestion] = useMutation<Pick<IMutation, 'createUseditemQuestion'>, IMutationCreateUseditemQuestionArgs>(CREATED_USED_ITEM_QUESTION, {
-        refetchQueries : [
-            {query : FETCH_USED_ITEM_QUESTIONS, variables : {page : 1, useditemId : router.query.id as string}},
-        ]
-    })
+    const [createQuestion] = useMutation<Pick<IMutation, 'createUseditemQuestion'>, IMutationCreateUseditemQuestionArgs>(CREATED_USED_ITEM_QUESTION)
 
     const handleSubmit = async (value : string) => {
         try {
@@ -23,7 +19,15 @@ const MarketCommentWrite = () => {
                     createUseditemQuestionInput : {
                         contents : value
                     }
-
+                },
+                update : (cache, {data}) => {
+                    cache.modify({
+                        fields : {
+                            fetchUseditemQuestions : (prev) => {
+                                return [...prev, data.createUseditemQuestion]
+                            }
+                        }
+                    })
                 }
             })
 

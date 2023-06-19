@@ -7,9 +7,6 @@ import Question from './components/Question';
 const MarketCommentListUI : React.FC<MarketCommentListUIProps> = ({
     questionData,
     handleClickDelete,
-    handleClickUpdate,
-    handleEdit,
-    isEdit,
 }) => {
 
     return (
@@ -20,10 +17,6 @@ const MarketCommentListUI : React.FC<MarketCommentListUIProps> = ({
                         <Question
                             question={question}
                             handleClickDelete={handleClickDelete}
-                            handleClickUpdate={handleClickUpdate}
-                            handleEdit={handleEdit}
-                            isEdit={isEdit}
-
                         />
                     ))
                 }

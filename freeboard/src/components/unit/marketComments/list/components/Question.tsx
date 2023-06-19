@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { IMutation, IMutationCreateUseditemQuestionAnswerArgs, IQuery, IQueryFetchUseditemQuestionAnswersArgs, IUseditemQuestion } from '../../../../../commons/types/generated/types';
+import { IMutation, IMutationCreateUseditemQuestionAnswerArgs, IMutationUpdateUseditemQuestionArgs, IQuery, IQueryFetchUseditemQuestionAnswersArgs, IUseditemQuestion } from '../../../../../commons/types/generated/types';
 import { useMutation, useQuery } from '@apollo/client';
-import { FETCH_USED_ITEM_QUESTION_ANSWERS, CREATE_USED_ITEM_QUESTION_ANSWER } from '../MarketCommentList.query';
+import { FETCH_USED_ITEM_QUESTION_ANSWERS, CREATE_USED_ITEM_QUESTION_ANSWER, UPDATE_USED_ITEM_QUESTION } from '../MarketCommentList.query';
 
 import * as S from '../MarketCommentList.style'
 import ProfileImage from '../../../../commons/profileImage';
@@ -12,22 +12,21 @@ import Answers from './Answers';
 
 interface QustionProps {
     question : IUseditemQuestion;
-    isEdit : boolean;
     handleClickDelete : (id : string) => void;
-    handleClickUpdate : (id: string) => (updateValue: string) => void;
-    handleEdit : () => void;
 }
 
 const Question : React.FC<QustionProps>= ({
-    isEdit,
     question,
-    handleEdit,
     handleClickDelete,
-    handleClickUpdate,
 }) => {
     const getDate = useDate()
     const {data : userData} = useUser()
     const [isReply, setIsReply] = useState<boolean>(false)
+    const [isEdit, setIsEdit] = useState<boolean>(false)
+
+    const handleEdit = () => {
+        setIsEdit((prev) => !prev)
+    }
 
     const handleReply = () => {
         setIsReply((prev) => !prev)
@@ -41,6 +40,40 @@ const Question : React.FC<QustionProps>= ({
             handleReply()
         }
     })
+
+    const [updateQuestion] = useMutation<Pick<IMutation, 'updateUseditemQuestion'>, IMutationUpdateUseditemQuestionArgs>(UPDATE_USED_ITEM_QUESTION, {
+        onCompleted : () => {
+            setIsEdit(false)
+        }
+    })
+
+    const handleClickUpdate = (id : string) => {
+        return (updateValue : string) => {
+            updateQuestion({
+                variables : {
+                    updateUseditemQuestionInput : {
+                        contents : updateValue
+                    },
+                    useditemQuestionId : id
+                },
+                update : (cache, {data}) => {
+                    cache.modify({
+                        fields : {
+                            fetchUseditemQuestions : (prev, {readField}) => {
+                                const newRef = [...prev].map((item) => {
+                                    if(readField('_id', item) === data?.updateUseditemQuestion._id) {
+                                        return data?.updateUseditemQuestion
+                                    }
+                                    return item
+                                })
+                                return [...newRef]
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    }
 
     const handleAnswer = useCallback((value : string) => {
         createAnswer({
@@ -60,9 +93,7 @@ const Question : React.FC<QustionProps>= ({
         }
     })
 
-
     const getEdit = useCallback((id : string) => {
-
         if(id === userData?.fetchUserLoggedIn._id) {
             return true
         }

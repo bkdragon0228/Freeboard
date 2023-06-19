@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 
 const MarketCommentList = () => {
     const router = useRouter()
-    const [isEdit, setIsEdit] = useState<boolean>(false)
     const {data : qusetionData} = useQuery<Pick<IQuery, 'fetchUseditemQuestions'>, IQueryFetchUseditemQuestionsArgs>(FETCH_USED_ITEM_QUESTIONS, {
         variables : {
             useditemId : router.query.id as string,
@@ -16,55 +15,30 @@ const MarketCommentList = () => {
         }
     })
 
-    const [deleteQuestion] = useMutation<Pick<IMutation , 'deleteUseditemQuestion'>, IMutationDeleteUseditemQuestionArgs>(DELETE_USED_ITEM_QUESTION, {
-        refetchQueries : [
-            {query : FETCH_USED_ITEM_QUESTIONS, variables : {page : 1, useditemId : router.query.id as string}}
-        ]
-    })
+    const [deleteQuestion] = useMutation<Pick<IMutation , 'deleteUseditemQuestion'>, IMutationDeleteUseditemQuestionArgs>(DELETE_USED_ITEM_QUESTION)
 
     const handleClickDelete = (id : string) => {
         alert('질문을 삭제하시겠습니까?')
         deleteQuestion({
             variables : {
                 useditemQuestionId : id
+            },
+            update : (cache, {data}) => {
+                cache.modify({
+                    fields : {
+                        fetchUseditemQuestions : (prev, {readField}) => {
+                            return [...prev].filter((item) => readField('_id', item) !== data.deleteUseditemQuestion)
+                        }
+                    }
+                })
             }
         })
     }
-
-    const [updateQuestion] = useMutation<Pick<IMutation, 'updateUseditemQuestion'>, IMutationUpdateUseditemQuestionArgs>(UPDATE_USED_ITEM_QUESTION, {
-        refetchQueries : [
-            {query : FETCH_USED_ITEM_QUESTIONS, variables : {page : 1, useditemId : router.query.id as string}}
-        ],
-        onCompleted : () => {
-            setIsEdit(false)
-        }
-    })
-
-    const handleClickUpdate = (id : string) => {
-        return (updateValue : string) => {
-            updateQuestion({
-                variables : {
-                    updateUseditemQuestionInput : {
-                        contents : updateValue
-                    },
-                    useditemQuestionId : id
-                }
-            })
-        }
-    }
-
-    const handleEdit = () => {
-        setIsEdit((prev) => !prev)
-    }
-
 
     return (
        <MarketCommentListUI
             questionData={qusetionData}
             handleClickDelete={handleClickDelete}
-            handleClickUpdate={handleClickUpdate}
-            isEdit={isEdit}
-            handleEdit={handleEdit}
        />
     );
 };

@@ -1,92 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic'
-import { MarketWriteUIProps } from './MarketWrite.types'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form';
+import { MarketWriteUIProps, MarketItemForm } from './MarketWrite.types'
 import { Modal } from 'antd'
-import { Address } from 'react-daum-postcode';
 
 import * as S from './MarketWrite.style'
-import * as yup from 'yup'
 import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
 
 import Input from '../../../commons/Input';
 import AddressSearch from '../../../commons/Address';
 import Map from '../../../commons/kakaoMap';
 import UploadImage from '../../../commons/upload/UploadImage';
 
-interface MarketItemForm {
-    title : string;
-    summary? : string;
-    tags? : string;
-    contents : string;
-    price : string;
-    zipcode : string;
-    address : string;
-    addressDetail : string;
-}
-
-interface AddressGeo {
-    lat : number;
-    lon : number
-}
-
 const ReactQuill = dynamic(() =>  import('react-quill'), {ssr : false})
 
-const schema = yup.object({
-    title : yup.string().required('입력해주세요.'),
-    cotents : yup.string().required('입력해주세요.'),
-    price : yup.string().required('입력해주세요.'),
-})
-
-const MarketWriteUI : React.FC<MarketWriteUIProps> = () => {
-    const [images, setImages] = useState<string[]>(['', '']);
-    const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [addressInfo, setAddressInfo] = useState<AddressGeo>({})
-    const {register, setValue, trigger, formState } = useForm<MarketItemForm>({
-        mode : 'onChange',
-        resolver : yupResolver(schema),
-        criteriaMode : 'all',
-    })
-
-    const onChangeImages = (url : string, index: number) => {
-        const newImages = [...images]
-        newImages[index] = url
-        setImages(newImages)
-    }
-
-    const onChaneContents = (value : string) => {
-        setValue('contents', value)
-        trigger('contents')
-    }
-
-    const handleComplete = async (data : Address) => {
-        setValue('zipcode', data.zonecode)
-        setValue('address', data.address)
-        try {
-            const config = {
-                headers : {
-                    Authorization : `KakaoAK ${process.env.NEXT_PUBLIC_REST_API_KEY}`
-                }
-            }
-            const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${data.address}`
-            const result = await axios.get(url, config)
-
-            if(result.data !== undefined || result.data !== null) {
-                if(result.data.documents[0].x && result.data.documents[0].y) {
-                 setAddressInfo({
-                      lon: result.data.documents[0].x,
-                      lat: result.data.documents[0].y,
-                  })
-              }}
-
-              setIsOpen(false)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
+const MarketWriteUI : React.FC<MarketWriteUIProps> = ({
+    formState,
+    handleComplete,
+    handleSubmit,
+    images,
+    onChangeContents,
+    onChangeImages,
+    register,
+    addressInfo,
+    isOpen,
+    setIsOpen
+}) => {
     return (
         <S.Container>
             <S.Title>상품 등록하기</S.Title>
@@ -116,7 +54,7 @@ const MarketWriteUI : React.FC<MarketWriteUIProps> = () => {
                     style={{
                         height : '300px'
                     }}
-                    onChange={onChaneContents}
+                    onChange={onChangeContents}
                 />
             </S.ColWrapper>
             <S.ColWrapper>

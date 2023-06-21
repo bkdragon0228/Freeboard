@@ -27,10 +27,16 @@ const Map : React.FC<MapProps> = ({
               window.kakao.maps.load(() => {
                     const container = document.getElementById("map");
                     const options = {
-                    center: new window.kakao.maps.LatLng(lat, lng),
-                    level: 3,
+                        center: new window.kakao.maps.LatLng(lat, lng),
+                        level: 3,
                     };
                     const map = new window.kakao.maps.Map(container, options);
+                    const markerPosition  = new window.kakao.maps.LatLng(lat, lng);
+                    const marker = new window.kakao.maps.Marker({
+                        position: markerPosition
+                    });
+
+                    marker.setMap(map);
                 }
             )
         }

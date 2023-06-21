@@ -3,6 +3,8 @@ import dynamic from 'next/dynamic'
 import { MarketWriteUIProps } from './MarketWrite.types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
+import { Modal } from 'antd'
+import { Address } from 'react-daum-postcode';
 
 import * as S from './MarketWrite.style'
 import * as yup from 'yup'
@@ -10,10 +12,9 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
 import Input from '../../../commons/Input';
-import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import AddressSearch from '../../../commons/Address';
-import { Modal } from 'antd'
 import Map from '../../../commons/kakaoMap';
+import UploadImage from '../../../commons/upload/UploadImage';
 
 interface MarketItemForm {
     title : string;
@@ -40,6 +41,7 @@ const schema = yup.object({
 })
 
 const MarketWriteUI : React.FC<MarketWriteUIProps> = () => {
+    const [images, setImages] = useState<string[]>(['', '']);
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [addressInfo, setAddressInfo] = useState<AddressGeo>({})
     const {register, setValue, trigger, formState } = useForm<MarketItemForm>({
@@ -47,6 +49,12 @@ const MarketWriteUI : React.FC<MarketWriteUIProps> = () => {
         resolver : yupResolver(schema),
         criteriaMode : 'all',
     })
+
+    const onChangeImages = (url : string, index: number) => {
+        const newImages = [...images]
+        newImages[index] = url
+        setImages(newImages)
+    }
 
     const onChaneContents = (value : string) => {
         setValue('contents', value)
@@ -78,8 +86,6 @@ const MarketWriteUI : React.FC<MarketWriteUIProps> = () => {
             console.log(error)
         }
     }
-
-    console.log(addressInfo)
 
     return (
         <S.Container>
@@ -170,6 +176,21 @@ const MarketWriteUI : React.FC<MarketWriteUIProps> = () => {
                         formState={formState}
                         register={register}
                     />
+                </S.ColWrapper>
+                <S.ColWrapper>
+                    <S.Rabel>사진 첨부</S.Rabel>
+                    <S.RowWrapper>
+                        {
+                            images.map((url, index) => (
+                                <UploadImage
+                                    key={index}
+                                    imageUrl={url}
+                                    index={index}
+                                    onChangeImages={onChangeImages}
+                                />
+                            ))
+                        }
+                    </S.RowWrapper>
                 </S.ColWrapper>
             </S.GridWrapper>
 

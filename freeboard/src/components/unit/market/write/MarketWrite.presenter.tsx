@@ -59,7 +59,7 @@ const MarketWriteUI : React.FC<MarketWriteUIProps> = () => {
         try {
             const config = {
                 headers : {
-                    Authorization : `KakaoAK ${'81ae3fe876e7dbbf8ca0463fb6198fc3'}`
+                    Authorization : `KakaoAK ${process.env.NEXT_PUBLIC_REST_API_KEY}`
                 }
             }
             const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${data.address}`

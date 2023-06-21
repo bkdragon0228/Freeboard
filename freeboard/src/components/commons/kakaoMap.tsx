@@ -34,7 +34,7 @@ const Map : React.FC<MapProps> = ({
                 }
             )
         }
-      }, [])
+      }, [lat, lng])
 
 
 
@@ -43,7 +43,7 @@ const Map : React.FC<MapProps> = ({
             <Head>
             </Head>
             <div>
-                <div id="map" style={{width : '800px', height: '400px'}}></div>
+                <div id="map" style={{height: '400px'}}></div>
             </div>
         </>
     );

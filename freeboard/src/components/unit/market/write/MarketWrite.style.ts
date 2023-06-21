@@ -26,6 +26,11 @@ export const RowWrapper = styled.div`
     flex-direction: row;
     column-gap: 1rem;
 `
+export const GridWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+`
 
 export const Rabel = styled.div`
     font-size: 16px;
@@ -39,3 +44,10 @@ export const Input = styled.input`
     border: 1px solid #bdbdbd;
 `
 
+export const Button = styled.button`
+    width: 120px;
+    padding: 20px;
+    border: 1px solid lightgray;
+    background-color: transparent;
+    border-radius: 20px;
+`

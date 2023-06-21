@@ -17,6 +17,7 @@ const MarketWriteUI : React.FC<MarketWriteUIProps> = ({
     formState,
     handleComplete,
     handleSubmit,
+    onSubmit,
     images,
     onChangeContents,
     onChangeImages,
@@ -81,8 +82,8 @@ const MarketWriteUI : React.FC<MarketWriteUIProps> = ({
                 <S.ColWrapper>
                     <S.Rabel>거래 위치</S.Rabel>
                     <Map
-                        lat={addressInfo.lat ? Number(addressInfo.lat) : null}
-                        lng={addressInfo.lon ? Number(addressInfo.lon) : null}
+                        lat={addressInfo?.lat ? Number(addressInfo.lat) : null}
+                        lng={addressInfo?.lon ? Number(addressInfo.lon) : null}
                     />
                 </S.ColWrapper>
                 {/* 주소 */}
@@ -131,7 +132,9 @@ const MarketWriteUI : React.FC<MarketWriteUIProps> = ({
                     </S.RowWrapper>
                 </S.ColWrapper>
             </S.GridWrapper>
-
+            <S.Button type='button' onClick={handleSubmit(onSubmit)}>
+                등록하기
+            </S.Button>
         </S.Container>
     );
 };

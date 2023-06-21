@@ -1,11 +1,12 @@
 import { Address } from "react-daum-postcode";
 import { IMutation } from "../../../../commons/types/generated/types";
-import { UseFormRegister, FormState } from 'react-hook-form'
+import { UseFormRegister, FormState, UseFormHandleSubmit } from 'react-hook-form'
+
 export type TCreateUsedItem = Pick<IMutation, 'createUseditem'>
 
 export interface MarketItemForm {
     title : string;
-    summary? : string;
+    summary : string;
     tags? : string;
     contents : string;
     price : string;
@@ -24,7 +25,8 @@ export interface MarketWriteUIProps {
     onChangeImages : (url : string, index : number) => void;
     onChangeContents : (value : string) => void;
     handleComplete : (data : Address) => void;
-    handleSubmit : (data : MarketItemForm) => void;
+    handleSubmit : UseFormHandleSubmit<MarketItemForm>;
+    onSubmit :  (data : MarketItemForm) => void;
     register : UseFormRegister<MarketItemForm>;
     formState : FormState<MarketItemForm>;
     addressInfo : AddressGeo;

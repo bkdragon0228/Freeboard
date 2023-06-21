@@ -12,21 +12,23 @@ import * as yup from 'yup'
 import 'react-quill/dist/quill.snow.css';
 
 import MarketWriteUI from './MarketWrite.presenter';
+import { useRouter } from 'next/router';
 
 const schema = yup.object({
-    title : yup.string().required('입력해주세요.'),
-    contents : yup.string().required('입력해주세요.'),
-    price : yup.string().required('입력해주세요.'),
+    title : yup.string().required('상품명을 입력해주세요.'),
+    contents : yup.string().required('내용을 입력해주세요.'),
+    price : yup.string().required('가격을 입력해주세요.'),
+    summary : yup.string().required('입력해주세요.'),
 })
 
 const MarketWrite = () => {
-
+    const router = useRouter()
     const [createUsedItem] = useMutation<TCreateUsedItem, IMutationCreateUseditemArgs>(CREATE_USED_ITEM)
 
     const [images, setImages] = useState<string[]>(['', '']);
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [addressInfo, setAddressInfo] = useState<AddressGeo>(null)
-    const {register, setValue, trigger, formState } = useForm<MarketItemForm>({
+    const {register, setValue, trigger, formState , handleSubmit} = useForm<MarketItemForm>({
         mode : 'onChange',
         resolver : yupResolver(schema),
         criteriaMode : 'all',
@@ -69,17 +71,17 @@ const MarketWrite = () => {
         }
     }
 
-    const handleSubmit = async (data : MarketItemForm) => {
+    const onSubmit = async (data : MarketItemForm) => {
         try {
-            void createUsedItem({
+            const result = await createUsedItem({
                 variables : {
                     createUseditemInput : {
                         contents : data.contents,
                         name : data.title,
                         price : Number(data.price),
                         images,
-                        tags : [],
-                        remarks : '',
+                        tags : data.tags.split(' '),
+                        remarks : data.summary,
                         useditemAddress : {
                             address : data.address,
                             addressDetail : data.addressDetail,
@@ -90,6 +92,8 @@ const MarketWrite = () => {
                     }
                 }
             })
+
+            router.push(`/market/${result?.data?.createUseditem._id}`)
         } catch (error) {
             console.log(error)
         }
@@ -100,6 +104,7 @@ const MarketWrite = () => {
         formState={formState}
         handleComplete={handleComplete}
         handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
         images={images}
         onChangeImages={onChangeImages}
         register={register}

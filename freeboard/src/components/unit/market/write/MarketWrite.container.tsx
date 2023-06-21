@@ -1,10 +1,10 @@
 import React from 'react';
 
+import MarketWriteUI from './MarketWrite.presenter';
+
 const MarketWrite = () => {
     return (
-        <div>
-            상품 등록 페이지
-        </div>
+       <MarketWriteUI />
     );
 };
 

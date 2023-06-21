@@ -1,11 +1,11 @@
 import React from 'react';
 import withAuth from '../../../src/hoc/withAuth';
 
+import MarketWrite from '../../../src/components/unit/market/write/MarketWrite.container';
+
 const MargetNewPage = () => {
     return (
-        <div>
-            마켓 상품 등록 페이지
-        </div>
+       <MarketWrite />
     );
 };
 

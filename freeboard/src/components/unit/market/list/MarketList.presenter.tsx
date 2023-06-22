@@ -33,7 +33,9 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
         <S.Container>
             <S.Best>
                 <h2>베스트 상품</h2>
-                <TodayItems />
+                <S.TodayItemWrpper>
+                    <TodayItems />
+                </S.TodayItemWrpper>
                 <S.BestItemsWrapper>
                     {
                         bestItemsList?.fetchUseditemsOfTheBest.map((item) => (

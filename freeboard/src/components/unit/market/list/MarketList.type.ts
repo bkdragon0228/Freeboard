@@ -14,8 +14,8 @@ interface Item {
     _id : string;
     name : string;
     price : string;
-    picture : string;
-    pickCount : number;
+    images : string[];
+    pickedCount : number;
     tags : string[];
 }
 

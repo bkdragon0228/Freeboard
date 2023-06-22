@@ -8,6 +8,7 @@ export const Container = styled.div`
 `
 
 export const Best = styled.div`
+    position: relative;
     width: 1200px;
     display: flex;
     flex-direction: column;
@@ -159,6 +160,11 @@ export const ItemPrice = styled.div`
 export const MiniTitles = styled.div`
     display: flex;
     column-gap: 1rem;
+`
+
+export const TodayItemWrpper = styled.div`
+    position: absolute;
+    right: -30%;
 `
 
 const MiniTitle = styled.button`

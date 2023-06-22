@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { MarketItemDetailUIProps } from './MarketItemDetail.types'
+import { Items } from '../list/MarketList.type'
 import { format } from 'date-fns'
 import { Basket } from '../../basket/Basket.type';
 
@@ -70,8 +71,22 @@ const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
             console.log(error)
         }
 
-
     }, [handleClickBasket, detailData])
+
+    useEffect(() => {
+        const currentTodayItems : Items = JSON.parse(localStorage.getItem('todayItems'))
+
+        if(!currentTodayItems) {
+            localStorage.setItem('todayItems', JSON.stringify([detailData?.fetchUseditem]))
+            return
+        } else {
+            const isHaveSame = currentTodayItems.some((item) => item?._id === detailData?.fetchUseditem._id)
+            if(isHaveSame) return
+
+            const newTodayItems = [...currentTodayItems, detailData?.fetchUseditem]
+            localStorage.setItem('todayItems', JSON.stringify(newTodayItems))
+        }
+    }, [detailData])
 
     return (
         <S.Container>

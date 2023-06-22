@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MarketListUIProps } from './MarketList.type';
+import { useRouter } from 'next/router';
 
 import useMoney from '../../../../hook/useMoney';
 
@@ -7,8 +8,8 @@ import * as S from './MarketList.styles'
 import ItemImage from '../../../commons/profileImage';
 import InfiniteScroll from 'react-infinite-scroller';
 import SearchBarTriggerdByButton from '../../../commons/searchBar/SearchBarTriggerByButton';
-import { useRouter } from 'next/router';
 import ComboBox from '../../../commons/comboBox/ComboBox';
+import TodayItems from './components/TodayItem';
 
 
 const MarketListUI : React.FC<MarketListUIProps> = ({
@@ -32,6 +33,7 @@ const MarketListUI : React.FC<MarketListUIProps> = ({
         <S.Container>
             <S.Best>
                 <h2>베스트 상품</h2>
+                <TodayItems />
                 <S.BestItemsWrapper>
                     {
                         bestItemsList?.fetchUseditemsOfTheBest.map((item) => (

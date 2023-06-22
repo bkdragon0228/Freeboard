@@ -9,3 +9,15 @@ export interface MarketListUIProps {
     isSoldout : boolean;
     setIsSoldout : React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+interface Item {
+    _id : string;
+    name : string;
+    price : string;
+    picture : string;
+    pickCount : number;
+    tags : string[];
+}
+
+export type Items = Item[]
+

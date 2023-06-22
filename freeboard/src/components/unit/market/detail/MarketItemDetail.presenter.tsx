@@ -1,12 +1,14 @@
 import React, { useCallback } from 'react';
 import { MarketItemDetailUIProps } from './MarketItemDetail.types'
 import { format } from 'date-fns'
+import { Basket } from '../../basket/Basket.type';
+
+import ProfileImage from '../../../commons/profileImage';
+import DOMPurify from 'dompurify';
 
 import * as S from './MarketItemDetail.style'
-import ProfileImage from '../../../commons/profileImage';
 import useMoney from '../../../../hook/useMoney';
 import Carousel from '../../../commons/Carousel';
-import { Basket } from '../../basket/Basket.type';
 import Map from '../../../commons/kakaoMap';
 
 const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
@@ -71,7 +73,6 @@ const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
 
     }, [handleClickBasket, detailData])
 
-    console.log(detailData)
     return (
         <S.Container>
             <S.SellerInfo>
@@ -102,7 +103,17 @@ const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
             </S.ItemInfo>
             <S.ItemPrice>{getMoney(String(detailData?.fetchUseditem.price))}원</S.ItemPrice>
             <Carousel images={detailData?.fetchUseditem.images.filter(e => e !== '').map((e) => `https://storage.googleapis.com/${e}`)} setting={carouselOption} />
-            <S.Content>{detailData?.fetchUseditem.contents}</S.Content>
+           {
+                process.browser ?  (
+                    <S.Content
+                        dangerouslySetInnerHTML={{
+                            __html : DOMPurify.sanitize(String(detailData?.fetchUseditem.contents))
+                        }}
+                    />
+                ) : (
+                    <S.Content></S.Content>
+                )
+           }
             <S.Tags>
                 {
                     detailData?.fetchUseditem.tags.map((tag) => (

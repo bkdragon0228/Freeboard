@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router'
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState , useRecoilValue} from 'recoil';
 import { isOpenStateBySign } from '../../state/isOpenState'
+import { tokenState } from '../../state/tokenState'
+import { getAccessToken } from '../util/getAccessToken';
 
 const withAuth = <T extends {}>(Component : React.FC<T>, option : boolean | null ) =>  (props : T) => {
     // null => 아무나 출입가능
@@ -13,22 +15,27 @@ const withAuth = <T extends {}>(Component : React.FC<T>, option : boolean | null
     useEffect(() => {
         if(option === null) return
 
-        if(option === true) {
-            if(!localStorage.getItem('accessToken')) {
-                router.push('/')
-                alert('로그인 해주세요.')
-                setIsOpenLogin(true)
-                return
-            }
-        }
+        void getAccessToken().then((accessToken) => {
 
-        if(option === false) {
-            if(localStorage.getItem('accessToken')) {
-                alert('로그아웃 해주세요.')
-                router.push('/')
-                return
+            console.log('accesstoken', accessToken)
+            if(option === true) {
+                if(!accessToken) {
+                    router.push('/')
+                    alert('로그인 해주세요.')
+                    setIsOpenLogin(true)
+                    return
+                }
             }
-        }
+
+            if(option === false) {
+                if(accessToken) {
+                    alert('로그아웃 해주세요.')
+                    router.push('/')
+                    return
+                }
+            }
+        })
+
 
     }, [])
 

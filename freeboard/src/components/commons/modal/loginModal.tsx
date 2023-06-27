@@ -52,7 +52,6 @@ const LoginModal : React.FC<LoginModalProps>= ({
     const [loginUser] = useMutation<Pick<IMutation, 'loginUser'>, IMutationLoginUserArgs>(LOGIN_USER, {
         onCompleted : (data) => {
             setIsOpen(false)
-            localStorage.setItem('accessToken', data.loginUser.accessToken)
             setAccessToken(data.loginUser.accessToken)
         }
     })

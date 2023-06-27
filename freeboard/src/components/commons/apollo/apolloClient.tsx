@@ -46,7 +46,8 @@ export default function ApolloClientSetting(props : PropsWithChildren<{}> ) {
     uri : "https://backend-practice.codebootcamp.co.kr/graphql",
     headers : {
       Authorization : accessToken ? `Bearer ${accessToken}` : ''
-    }
+    },
+    credentials : 'include'
   })
 
   const client = new ApolloClient({

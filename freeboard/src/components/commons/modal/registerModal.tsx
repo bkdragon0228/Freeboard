@@ -108,9 +108,8 @@ const RegisterModal : React.FC<RegisterModalProps>= ({
                     createUserInput : formData
                 }
             })
-
         } catch (error) {
-            console.log(error)
+            alert(error?.message)
         }
     }
 

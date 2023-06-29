@@ -1,13 +1,19 @@
 import { useRouter } from "next/router"
-import { useSetRecoilState } from 'recoil'
-import { tokenState } from '../../state/tokenState'
+import { gql, useMutation } from "@apollo/client"
+import { IMutation } from "../commons/types/generated/types"
+
+const LOGOUT_USER = gql`
+    mutation {
+        logoutUser
+    }
+`
 
 export default function useLogout () {
     const router = useRouter()
-    const setAccessToken = useSetRecoilState(tokenState)
+    const [ logoutUser ] = useMutation<Pick<IMutation, 'logoutUser'>>(LOGOUT_USER)
+
     return () => {
-        // 로그아웃 api 연동해야함.
-        setAccessToken(null)
+        logoutUser()
         router.reload()
     }
 }

@@ -12,6 +12,7 @@ import { Form, RowWrapper, Button } from './registerModal';
 
 import Modal from './Modal';
 import Input from '../Input';
+import { AxiosError } from 'axios';
 
 const LOGIN_USER = gql`
     mutation LoginUser ($email : String!, $password : String!) {
@@ -49,7 +50,7 @@ const LoginModal : React.FC<LoginModalProps>= ({
         mode : 'onChange'
     });
 
-    const [loginUser] = useMutation<Pick<IMutation, 'loginUser'>, IMutationLoginUserArgs>(LOGIN_USER, {
+    const [loginUser] = useMutation<Pick<IMutation, 'loginUser'>, IMutationLoginUserArgs, AxiosError>(LOGIN_USER, {
         onCompleted : (data) => {
             setIsOpen(false)
             setAccessToken(data.loginUser.accessToken)
@@ -57,8 +58,6 @@ const LoginModal : React.FC<LoginModalProps>= ({
     })
 
     const onSubmit = async (data : FormProps) => {
-
-        console.log(data)
         try {
             await loginUser({
                 variables : {
@@ -68,7 +67,7 @@ const LoginModal : React.FC<LoginModalProps>= ({
             })
             console.log('login Success')
         } catch (error) {
-            console.log(error)
+            alert(error?.message)
         }
     }
 

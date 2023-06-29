@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router'
-import { useSetRecoilState , useRecoilValue} from 'recoil';
+import { useSetRecoilState , useRecoilValue, useRecoilValueLoadable} from 'recoil';
 import { isOpenStateBySign } from '../../state/isOpenState'
-import { tokenState } from '../../state/tokenState'
+import { tokenState, restoreAccessTokenLoadble } from '../../state/tokenState'
 import { getAccessToken } from '../util/getAccessToken';
 
 const withAuth = <T extends {}>(Component : React.FC<T>, option : boolean | null ) =>  (props : T) => {
@@ -11,11 +11,12 @@ const withAuth = <T extends {}>(Component : React.FC<T>, option : boolean | null
     // false => 로그인한 유저는 출입 불가능
     const router = useRouter()
     const setIsOpenLogin = useSetRecoilState(isOpenStateBySign('login'))
+    const restoreToken = useRecoilValueLoadable(restoreAccessTokenLoadble)
 
     useEffect(() => {
         if(option === null) return
 
-        void getAccessToken().then((accessToken) => {
+        void restoreToken.toPromise().then((accessToken) => {
 
             console.log('accesstoken', accessToken)
             if(option === true) {

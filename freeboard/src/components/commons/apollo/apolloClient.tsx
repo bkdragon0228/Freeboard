@@ -3,21 +3,31 @@ import { ApolloClient, InMemoryCache, ApolloProvider, ApolloLink, fromPromise } 
 import { onError } from '@apollo/client/link/error'
 import { PropsWithChildren } from 'react';
 import { createUploadLink } from 'apollo-upload-client'
-import { useSetRecoilState, useRecoilState } from 'recoil';
-import { tokenState } from '../../../../state/tokenState';
+import { useSetRecoilState, useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { tokenState, restoreAccessTokenLoadble} from '../../../../state/tokenState';
 import { getAccessToken } from '../../../util/getAccessToken';
+import { useRouter } from 'next/router';
 
 const GLOBAL_STATE = new InMemoryCache()
 
 export default function ApolloClientSetting(props : PropsWithChildren<{}> ) {
+  const router = useRouter()
   const [accessToken ,setAccessToken] = useRecoilState(tokenState)
+  const restoreToken = useRecoilValueLoadable(restoreAccessTokenLoadble)
+
 
   useEffect(()=>{
-      void getAccessToken().then((accessToken) => {
-        console.log('accessToken', accessToken)
-        setAccessToken(accessToken ?? '')
-      })
-  },[])
+    switch (restoreToken.state) {
+      case 'hasValue':
+        setAccessToken(restoreToken.contents)
+        return
+
+      case 'hasError':
+        alert('로그인 기한이 만료되었습니다.')
+        router.push('/')
+    }
+
+  },[restoreToken])
 
 
   const errorLink = onError(({graphQLErrors, operation, forward}) => {

@@ -6,7 +6,8 @@ import ItemCard from '../../commons/ItemCard';
 import Link from 'next/link';
 
 const MainPageUI : React.FC<IMainUIProps> = ({
-    bestBoards
+    bestBoards,
+    bestUseditems
 }) => {
     return (
         <S.Container>
@@ -55,9 +56,19 @@ const MainPageUI : React.FC<IMainUIProps> = ({
                 </S.contentsCol>
            </S.Section>
            <S.Section>
+
                 <S.contentsCol>
-                    <h1>중고거래 인기매물</h1>
-                    <div></div>
+                    <div>
+                        <h1>중고거래 인기매물</h1>
+                        <div>
+                            다양한 상품을 보고 싶다면?
+                            중고 마켓으로&nbsp;
+                            <Link href='/market'>바로 가기</Link>
+                        </div>
+                    </div>
+                    <ItemCard
+                        bestItems={bestUseditems?.fetchUseditemsOfTheBest}
+                    />
                 </S.contentsCol>
            </S.Section>
         </S.Container>

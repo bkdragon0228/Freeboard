@@ -19,15 +19,13 @@ const ItemCard = <T extends IBoard[] | IUseditem[]>({
         return (target as  IUseditem[])?.[0].price !== undefined;
     }
 
-    console.log(bestItems)
-
     if(isUsedItem(bestItems)) {
         return (
             <BestItemsWrapper>
                 {
                     bestItems?.map((item) => (
                         <BestItem key={item._id}>
-                            <ItemImage url={item.images[0] ? `https://storage.googleapicom/${item.images[0]}` : '/images/no-imagepng'} isCircle={false} width={242} height={242}/>
+                            <ItemImage url={item.images[0] ? `https://storage.googleapis.com/${item.images[0]}` : '/images/no-imagepng'} isCircle={false} width={242} height={242}/>
                             <Name>{item?.name}</Name>
                             <Tag>{item.tags[0]}</Tag>
                             <ItemInfo>

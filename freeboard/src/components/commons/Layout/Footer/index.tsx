@@ -17,6 +17,8 @@ const Footer = () => {
 export default Footer;
 
 export const Container = styled.footer`
+    padding: 20px;
+    border-top: 1px solid lightgray;
     height: 100px;
 `
 

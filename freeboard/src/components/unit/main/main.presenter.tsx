@@ -5,7 +5,6 @@ import * as S from './main.style'
 import ItemCard from '../../commons/ItemCard';
 import Link from 'next/link';
 import { css } from '@emotion/css'
-import styles from './main.module.css'
 
 const MainPageUI : React.FC<IMainUIProps> = ({
     bestBoards,

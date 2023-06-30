@@ -31,13 +31,15 @@ export const SectionTitle = styled.div<{
 `
 
 export const SubTitle = styled.div`
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
     transform: translateX(-50%);
     opacity: 0;
     transition: .8s;
 `
 
 export const contents = styled.div`
-    /* width: 800px; */
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;

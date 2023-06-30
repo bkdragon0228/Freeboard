@@ -11,11 +11,13 @@ export const Best = styled.div`
   margin-top: 80px;
   width: 1200px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   row-gap: 40px;
   margin-bottom: 80px;
 `;
-export const Title = styled.div`
+export const Title = styled.h2`
   font-size: 36px;
   line-height: 42.19px;
   text-align: center;
@@ -87,9 +89,6 @@ export const ElementTitle = styled.span<{
 }>`
   cursor: pointer;
   color : ${(props) => props.isKeyword ? 'red' : 'black'};
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 export const CreateButton = styled.button`

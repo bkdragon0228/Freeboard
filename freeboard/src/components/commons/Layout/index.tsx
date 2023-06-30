@@ -5,6 +5,7 @@ import { isOpenStateBySign } from '../../../../state/isOpenState'
 
 import LayoutHeader from './Header'
 import LayoutNavigation from './Navigation'
+import LayoutFooter from './Footer'
 import RegisterModal from '../modal/registerModal'
 import LoginModal from '../modal/loginModal'
 
@@ -20,6 +21,7 @@ export default function Layout(props : PropsWithChildren<{}>) {
         <div>
             {props.children}
         </div>
+        <LayoutFooter />
         <RegisterModal isOpen={isOpenRigster} setIsOpen={setIsOpenRegister} setIsOpenLogin={setIsOpenLogin}/>
         <LoginModal isOpen={isOpenLogin} setIsOpen={(setIsOpenLogin)} setIsOpenRegister={(setIsOpenRegister)}/>
     </>

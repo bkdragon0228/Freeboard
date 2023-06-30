@@ -13,6 +13,7 @@ import { Form, RowWrapper, Button } from './registerModal';
 import Modal from './Modal';
 import Input from '../Input';
 import { AxiosError } from 'axios';
+import { useRouter } from 'next/router';
 
 const LOGIN_USER = gql`
     mutation LoginUser ($email : String!, $password : String!) {
@@ -43,6 +44,7 @@ const LoginModal : React.FC<LoginModalProps>= ({
     setIsOpen,
     setIsOpenRegister
 }) => {
+    const router = useRouter()
     const setAccessToken = useSetRecoilState(tokenState)
     const { register, handleSubmit, watch, formState } = useForm<FormProps>({
         criteriaMode : 'all',
@@ -54,6 +56,7 @@ const LoginModal : React.FC<LoginModalProps>= ({
         onCompleted : (data) => {
             setIsOpen(false)
             setAccessToken(data.loginUser.accessToken)
+            router.reload()
         }
     })
 

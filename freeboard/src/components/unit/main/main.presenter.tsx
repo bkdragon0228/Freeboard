@@ -55,8 +55,7 @@ const MainPageUI : React.FC<IMainUIProps> = ({
                     />
                 </S.contentsCol>
            </S.Section>
-           <S.Section>
-
+           <S.Section bgcolor='#f8f9fa'>
                 <S.contentsCol>
                     <div>
                         <h1>중고거래 인기매물</h1>

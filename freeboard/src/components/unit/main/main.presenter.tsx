@@ -1,19 +1,51 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IMainUIProps } from './main.type'
 
 import * as S from './main.style'
 import ItemCard from '../../commons/ItemCard';
 import Link from 'next/link';
+import { css } from '@emotion/css'
+import styles from './main.module.css'
 
 const MainPageUI : React.FC<IMainUIProps> = ({
     bestBoards,
     bestUseditems
 }) => {
+
+    useEffect(() => {
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: .5,
+          }
+
+        const observer : IntersectionObserver = new IntersectionObserver(entries => {
+            const active = css`
+                transform: translateX(0);
+                opacity: 1;
+            `
+
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add(active);
+              } else {
+                entry.target.classList.remove(active);
+              }
+            });
+        }, options);
+
+        const titleList = document.querySelectorAll('#SectionTitle');
+        console.log(titleList)
+        titleList.forEach(el => observer.observe(el));
+
+      },  [])
+
+
     return (
         <S.Container>
            <S.Section bgcolor='#fbf7f2'>
                 <S.contents>
-                    <S.SectionTitle width={320}>
+                    <S.SectionTitle width={320} id='SectionTitle'>
                         <h1>
                             파워 있는 <br/>
                             자유 게시판과 <br/>
@@ -28,7 +60,7 @@ const MainPageUI : React.FC<IMainUIProps> = ({
            <S.Section>
                 <S.contents>
                     <div></div>
-                        <S.SectionTitle>
+                        <S.SectionTitle id='SectionTitle'>
                             <h1>
                                 로그인 없이 자유로운 게시판 <br/>
                                 믿을 수 있는 중고 직거래 마켓
@@ -42,14 +74,14 @@ const MainPageUI : React.FC<IMainUIProps> = ({
            </S.Section>
            <S.Section bgcolor='#e7f4fc'>
                 <S.contentsCol>
-                    <div>
+                    <S.SubTitle id='SectionTitle'>
                         <h1>자유게시판 인기글</h1>
                         <div>
                             다양한 글을 보고 싶다면?
                             자유 게시판으로&nbsp;
                             <Link href='/boards'>바로 가기</Link>
                         </div>
-                    </div>
+                    </S.SubTitle>
                     <ItemCard
                         bestItems={bestBoards?.fetchBoardsOfTheBest}
                     />
@@ -57,14 +89,14 @@ const MainPageUI : React.FC<IMainUIProps> = ({
            </S.Section>
            <S.Section bgcolor='#f8f9fa'>
                 <S.contentsCol>
-                    <div>
+                    <S.SubTitle id='SectionTitle'>
                         <h1>중고거래 인기매물</h1>
                         <div>
                             다양한 상품을 보고 싶다면?
                             중고 마켓으로&nbsp;
                             <Link href='/market'>바로 가기</Link>
                         </div>
-                    </div>
+                    </S.SubTitle>
                     <ItemCard
                         bestItems={bestUseditems?.fetchUseditemsOfTheBest}
                     />

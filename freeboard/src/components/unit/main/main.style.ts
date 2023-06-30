@@ -25,6 +25,15 @@ export const SectionTitle = styled.div<{
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: .8s;
+`
+
+export const SubTitle = styled.div`
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: .8s;
 `
 
 export const contents = styled.div`

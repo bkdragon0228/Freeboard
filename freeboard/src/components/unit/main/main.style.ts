@@ -28,9 +28,14 @@ export const SectionTitle = styled.div<{
 `
 
 export const contents = styled.div`
-    width: 800px;
+    /* width: 800px; */
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     place-items: center;
+`
+
+export const contentsCol = styled(contents)`
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px 600px;
 `

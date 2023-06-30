@@ -1,8 +1,13 @@
 import React from 'react';
+import { IMainUIProps } from './main.type'
 
 import * as S from './main.style'
+import ItemCard from '../../commons/ItemCard';
+import Link from 'next/link';
 
-const MainPageUI = () => {
+const MainPageUI : React.FC<IMainUIProps> = ({
+    bestBoards
+}) => {
     return (
         <S.Container>
            <S.Section bgcolor='#fbf7f2'>
@@ -35,10 +40,25 @@ const MainPageUI = () => {
                 </S.contents>
            </S.Section>
            <S.Section bgcolor='#e7f4fc'>
-                섹션 3
+                <S.contentsCol>
+                    <div>
+                        <h1>자유게시판 인기글</h1>
+                        <div>
+                            다양한 글을 보고 싶다면?
+                            자유 게시판으로&nbsp;
+                            <Link href='/boards'>바로 가기</Link>
+                        </div>
+                    </div>
+                    <ItemCard
+                        bestItems={bestBoards?.fetchBoardsOfTheBest}
+                    />
+                </S.contentsCol>
            </S.Section>
            <S.Section>
-                섹션 4
+                <S.contentsCol>
+                    <h1>중고거래 인기매물</h1>
+                    <div></div>
+                </S.contentsCol>
            </S.Section>
         </S.Container>
     );

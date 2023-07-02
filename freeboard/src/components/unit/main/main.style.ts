@@ -30,6 +30,12 @@ export const SectionTitle = styled.div<{
     transition: .8s;
 `
 
+export const SectionTitleBasic = styled(SectionTitle)`
+    width: auto;
+    transform: translateX(0);
+    opacity: 1;
+`
+
 export const SubTitle = styled.div`
     display: flex;
     flex-direction: column;

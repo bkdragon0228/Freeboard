@@ -1,20 +1,24 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
-import { FETCH_USED_ITEM } from './MarketItemDetail.query';
+import { useMutation, useQuery } from '@apollo/client';
+import { FETCH_USED_ITEM, TOGGLE_USED_ITEM_PICK } from './MarketItemDetail.query';
 
 import MarketItemDetailUI from './MarketItemDetail.presenter';
-import { IQuery, IQueryFetchUseditemArgs } from '../../../../commons/types/generated/types';
+import { IMutation, IMutationToggleUseditemPickArgs, IQuery, IQueryFetchUseditemArgs } from '../../../../commons/types/generated/types';
 import { Basket } from '../../basket/Basket.type';
 
 const MarketItemDetail = () => {
     const router = useRouter()
-    const {data : itemDetail} = useQuery<Pick<IQuery, 'fetchUseditem'>, IQueryFetchUseditemArgs>(FETCH_USED_ITEM, {
+    const {data : itemDetail, refetch} = useQuery<Pick<IQuery, 'fetchUseditem'>, IQueryFetchUseditemArgs>(FETCH_USED_ITEM, {
         variables : {
             useditemId : router.query.id as string
         }
     })
-
+    const [togglePick] = useMutation<unknown, IMutationToggleUseditemPickArgs>(TOGGLE_USED_ITEM_PICK, {
+      onCompleted : () => {
+        refetch()
+      }
+    })
     const handleClickBasket = (basket: Basket) => {
         console.log(basket);
 
@@ -33,10 +37,19 @@ const MarketItemDetail = () => {
 
       };
 
+      const handleToggle = (useditemId : string) => () => {
+        togglePick({
+          variables : {
+            useditemId,
+          }
+        })
+      }
+
     return (
        <MarketItemDetailUI
          detailData={itemDetail}
          handleClickBasket={handleClickBasket}
+         handleToggle={handleToggle(router.query.id as string)}
        />
     );
 };

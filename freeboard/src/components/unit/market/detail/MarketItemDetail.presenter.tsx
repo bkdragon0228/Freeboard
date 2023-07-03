@@ -14,7 +14,8 @@ import Map from '../../../commons/kakaoMap';
 
 const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
     handleClickBasket,
-    detailData
+    detailData,
+    handleToggle,
 }) => {
     const getMoney = useMoney()
     const getCreatedDate = useCallback(() => {
@@ -109,7 +110,7 @@ const MarketItemDetailUI : React.FC<MarketItemDetailUIProps> = ({
                         <S.ItemName>{detailData?.fetchUseditem.name}</S.ItemName>
                     </S.ColWrap>
                     <S.ColWrap>
-                        <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={() => handleToggle()}>
                             <path d="M14.9998 28.025L12.8248 26.045C5.09976 19.04 -0.000244141 14.42 -0.000244141 8.75C-0.000244141 4.13 3.62976 0.5 8.24975 0.5C10.8598 0.5 13.3648 1.715 14.9998 3.635C16.6348 1.715 19.1398 0.5 21.7498 0.5C26.3698 0.5 29.9998 4.13 29.9998 8.75C29.9998 14.42 24.8998 19.04 17.1748 26.06L14.9998 28.025Z" fill="#FFD600"/>
                         </svg>
                         <S.ItemPickCount>{detailData?.fetchUseditem.pickedCount}</S.ItemPickCount>

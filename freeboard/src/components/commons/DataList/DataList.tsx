@@ -7,8 +7,9 @@ import useDate from '../../../hook/useDate';
 import * as S from './DataList.style'
 import Pagenation from '../pagination/pagination';
 import useMove from '../../../hook/useMove';
+import useMoney from '../../../hook/useMoney';
 
-export type ResponceDataOfList = Pick<IQuery, 'fetchBoards'> | Pick<IQuery, 'fetchUseditems'>
+export type ResponceDataOfList = Pick<IQuery, 'fetchBoards'> | Pick<IQuery, 'fetchUseditems'> | Pick<IQuery, 'fetchUseditemsISold'>
 
 type ListData = IBoard[] | IUseditem[]
 
@@ -31,6 +32,7 @@ const DataList = <T extends ResponceDataOfList>({
 } : IDataListProps<T>) => {
     const getDate = useDate()
     const { moveToPath } = useMove()
+    const getMoney = useMoney()
 
     if(!data) return null;
 
@@ -63,7 +65,7 @@ const DataList = <T extends ResponceDataOfList>({
               </S.List>
             </S.ListWrapper>
         )
-    } else {
+    } else if ('fetchUseditems' in data){
         return (
             <S.ListWrapper>
               <S.List>
@@ -90,6 +92,36 @@ const DataList = <T extends ResponceDataOfList>({
                     refetchBoards={refetchData}
                 />
               </S.List>
+            </S.ListWrapper>
+        )
+    } else {
+        return (
+            <S.ListWrapper>
+              <S.List>
+                {data?.fetchUseditemsISold.map((e, i) => (
+                  <S.Element key={e._id}>
+                    <div>{i + 1}</div>
+                    <div id={e._id} >
+                      {
+                        e.name.replaceAll(searchTerm, `!@#$${searchTerm}!@#$`).split('!@#$').map((name) => (
+                          <S.ElementTitle key={e._id} isKeyword={name === searchTerm ? true : false}>
+                            {name}
+                          </S.ElementTitle>
+                        ))
+                      }
+                    </div>
+                    <div>{getMoney(e.price.toString())}</div>
+                    <div>{getDate(e.createdAt)}</div>
+                  </S.Element>
+                ))}
+
+              </S.List>
+              <Pagenation
+                    lastPage={lastPage}
+                    page={page}
+                    setPage={setPage}
+                    refetchBoards={refetchData}
+                />
             </S.ListWrapper>
         )
     }

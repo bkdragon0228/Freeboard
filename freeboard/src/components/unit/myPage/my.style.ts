@@ -38,4 +38,11 @@ export const SectionBtn = styled.button<{
     cursor: pointer;
 `
 
-export const Product = styled.div``
+export const Product = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    align-items: center;
+    padding : 32px 0 0 0;
+`

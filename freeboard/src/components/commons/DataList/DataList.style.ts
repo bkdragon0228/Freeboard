@@ -12,6 +12,7 @@ export const ListWrapper = styled.div`
 export const List = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 500px;
 `;
 
 export const Element = styled.div`

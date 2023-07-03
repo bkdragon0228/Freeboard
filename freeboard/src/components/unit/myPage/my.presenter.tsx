@@ -6,14 +6,29 @@ import ProfileImage from '../../commons/profileImage';
 import useMoney from '../../../hook/useMoney';
 import { useRouter } from 'next/router';
 import DataList from '../../commons/DataList/DataList';
+import { IQuery } from '../../../commons/types/generated/types';
+import ComboBox from '../../commons/comboBox/ComboBox';
 
 const MYUI : React.FC<MYUIProps> = ({
     userData,
-    pagePath
+    pagePath,
+    useditemsIsoldData,
+    lastPage,
+    page,
+    searchTerm,
+    setSearchTerm,
+    setPage,
+    refetchUseditemIsold
 }) => {
     const getMoney = useMoney()
     const router = useRouter()
-    console.log(router.pathname)
+
+    const onClickButton = (value : string) => {
+        setSearchTerm(value)
+        refetchUseditemIsold({
+            search : value
+        })
+    }
     return (
         <S.Container>
             <S.User>
@@ -43,7 +58,27 @@ const MYUI : React.FC<MYUIProps> = ({
                 </S.MyPageSections>
             </S.User>
             <S.Product>
-
+                <div style={{
+                    width : '100%',
+                    display : 'flex',
+                    justifyContent : 'space-between'
+                }}>
+                    <h2>나의 상품</h2>
+                    <ComboBox>
+                        <ComboBox.Input />
+                        <ComboBox.Button
+                            handleSubmit={onClickButton}
+                        />
+                    </ComboBox>
+                </div>
+                <DataList
+                    data={useditemsIsoldData}
+                    lastPage={lastPage}
+                    page={page}
+                    setPage={setPage}
+                    refetchData={refetchUseditemIsold}
+                    searchTerm={searchTerm}
+                />
             </S.Product>
         </S.Container>
     );

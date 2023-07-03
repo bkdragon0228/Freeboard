@@ -5,6 +5,7 @@ import * as S from './my.style'
 import ProfileImage from '../../commons/profileImage';
 import useMoney from '../../../hook/useMoney';
 import { useRouter } from 'next/router';
+import DataList from '../../commons/DataList/DataList';
 
 const MYUI : React.FC<MYUIProps> = ({
     userData,
@@ -41,7 +42,9 @@ const MYUI : React.FC<MYUIProps> = ({
                     }
                 </S.MyPageSections>
             </S.User>
-            <S.Product></S.Product>
+            <S.Product>
+
+            </S.Product>
         </S.Container>
     );
 };

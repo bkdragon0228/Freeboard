@@ -2,12 +2,13 @@ import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled'
 import { IQuery } from '../../../commons/types/generated/types';
 import { ApolloQueryResult, OperationVariables } from '@apollo/client';
+import { ResponceDataOfList } from '../DataList/DataList';
 
-interface PagiNationProps {
+interface PagiNationProps<T extends ResponceDataOfList> {
     page : number
     setPage : (arg : number) => void
     lastPage : number
-    refetchBoards : (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<Pick<IQuery, "fetchBoards">>>
+    refetchBoards : (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<T>>
 }
 
 const Page = styled.div<{
@@ -18,12 +19,12 @@ const Page = styled.div<{
     color : ${(props) => props.isCurrent ? 'blue' : 'black'};
 `
 
-const Pagenation : React.FC<PagiNationProps> = ({
+const Pagenation = <T extends ResponceDataOfList>({
     page,
     setPage,
     lastPage,
     refetchBoards
-}) => {
+} : PagiNationProps<T>) => {
     const [startPage, setStartPage] = useState<number>(1)
     const handleClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((e) => {
         setPage(+e.currentTarget.id)

@@ -9,11 +9,15 @@ interface ISections {
 export interface MYUIProps {
     userData :  Pick<IQuery, "fetchUserLoggedIn">;
     useditemsIsoldData : Pick<IQuery, 'fetchUseditemsISold'>;
+    pickedUseditemData : Pick<IQuery, 'fetchUseditemsIPicked'>;
     page : number;
     lastPage : number;
     setPage : React.Dispatch<React.SetStateAction<number>>;
     searchTerm : string;
     setSearchTerm : React.Dispatch<React.SetStateAction<string>>;
     pagePath : ISections[];
-    refetchUseditemIsold : (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<Pick<IQuery, 'fetchUseditemsISold'>>>
+    refetchUseditemIsold : (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<Pick<IQuery, 'fetchUseditemsISold'>>>;
+    refetchUseditemPicked : (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<Pick<IQuery, 'fetchUseditemsIPicked'>>>;
+    isSoldItem : boolean;
+    handleItemCate : (value : boolean) => void;
 }

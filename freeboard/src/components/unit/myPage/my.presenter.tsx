@@ -18,17 +18,30 @@ const MYUI : React.FC<MYUIProps> = ({
     searchTerm,
     setSearchTerm,
     setPage,
-    refetchUseditemIsold
+    refetchUseditemIsold,
+    handleItemCate,
+    isSoldItem,
+    pickedUseditemData,
+    refetchUseditemPicked,
 }) => {
     const getMoney = useMoney()
     const router = useRouter()
 
     const onClickButton = (value : string) => {
         setSearchTerm(value)
-        refetchUseditemIsold({
-            search : value
-        })
+
+        if(isSoldItem) {
+            refetchUseditemIsold({
+                search : value
+            })
+        } else {
+            refetchUseditemPicked({
+                search : value
+            })
+        }
+
     }
+
     return (
         <S.Container>
             <S.User>
@@ -45,9 +58,9 @@ const MYUI : React.FC<MYUIProps> = ({
                 </S.Point>
                 <S.MyPageSections>
                     {
-                        pagePath.map(({path, name}) => (
+                        pagePath.map(({path, name}, i) => (
                             <S.SectionBtn
-                                key={path}
+                                key={i}
                                 isCurrent={router.pathname === path}
                                 onClick={() => router.push(path)}
                             >
@@ -63,7 +76,20 @@ const MYUI : React.FC<MYUIProps> = ({
                     display : 'flex',
                     justifyContent : 'space-between'
                 }}>
-                    <h2>나의 상품</h2>
+                    <S.Category>
+                        <S.Sold
+                            isSold={isSoldItem}
+                            onClick={() => handleItemCate(true)}
+                        >
+                            나의 상품
+                        </S.Sold>
+                        <S.Pick
+                            isSold={isSoldItem}
+                            onClick={() => handleItemCate(false)}
+                        >
+                            마이찜
+                        </S.Pick>
+                    </S.Category>
                     <ComboBox>
                         <ComboBox.Input />
                         <ComboBox.Button
@@ -71,14 +97,27 @@ const MYUI : React.FC<MYUIProps> = ({
                         />
                     </ComboBox>
                 </div>
-                <DataList
-                    data={useditemsIsoldData}
-                    lastPage={lastPage}
-                    page={page}
-                    setPage={setPage}
-                    refetchData={refetchUseditemIsold}
-                    searchTerm={searchTerm}
-                />
+                {
+                    isSoldItem ? (
+                        <DataList
+                            data={useditemsIsoldData}
+                            lastPage={lastPage}
+                            page={page}
+                            setPage={setPage}
+                            refetchData={refetchUseditemIsold}
+                            searchTerm={searchTerm}
+                        />
+                    ) : (
+                        <DataList
+                            data={pickedUseditemData}
+                            lastPage={lastPage}
+                            page={page}
+                            setPage={setPage}
+                            refetchData={refetchUseditemPicked}
+                            searchTerm={searchTerm}
+                        />
+                    )
+                }
             </S.Product>
         </S.Container>
     );

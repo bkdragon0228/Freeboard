@@ -8,6 +8,10 @@ const FETCH_USER_LOGGEDIN = gql`
             email
             name
             picture
+            userPoint {
+                _id
+                amount
+            }
         }
     }
 `
@@ -16,3 +20,4 @@ const FETCH_USER_LOGGEDIN = gql`
 export default function useUser () {
     return useQuery<Pick<IQuery, 'fetchUserLoggedIn'>>(FETCH_USER_LOGGEDIN)
 }
+

@@ -8,22 +8,8 @@ import useUser from '../../../hook/useUser';
 import MYUI from './my.presenter';
 
 const My = () => {
-    const myPageSectionsPath = useMemo(() => [
-        {
-            path : '/user/my',
-            name : '내 장터'
-        },
-        {
-            path : '/user/my/point',
-            name : '내 포인트'
-        },
-        {
-            path : '/user/my/edit',
-            name : '내 프로필'
-        }
-    ], [])
 
-    const {data : userData} = useUser()
+
     const {data : useditemsIsoldData, refetch : useditemsIsoldRefetch} = useQuery<Pick<IQuery, 'fetchUseditemsISold'>, IQueryFetchUseditemsISoldArgs>(FETCH_USED_ITEMS_I_SOLD, {
         variables : {
             page : 1,
@@ -51,11 +37,8 @@ const My = () => {
         setIsoldItem(value)
     }
 
-    console.log(lastPage)
     return (
         <MYUI
-            pagePath={myPageSectionsPath}
-            userData={userData}
             useditemsIsoldData={useditemsIsoldData}
             pickedUseditemData={pickedUseditemData}
             lastPage={lastPage}

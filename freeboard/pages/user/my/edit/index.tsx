@@ -1,10 +1,11 @@
 import React from 'react';
 import MyPageLayout from '../../../../src/components/commons/myPageLayout';
+import MyEdit from '../../../../src/components/unit/myPageEdit/myEdit.container';
 
 const MyEditPage = () => {
     return (
         <MyPageLayout>
-            마이 수정 페이지
+            <MyEdit />
         </MyPageLayout>
     );
 };

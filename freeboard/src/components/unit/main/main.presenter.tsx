@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react';
+import { css } from '@emotion/css'
 import { IMainUIProps } from './main.type'
+
+import Link from 'next/link';
 
 import * as S from './main.style'
 import ItemCard from '../../commons/ItemCard';
-import Link from 'next/link';
-import { css } from '@emotion/css'
-import useTextAnimation from '../../../hook/useTextAnimation';
 
 const MainPageUI : React.FC<IMainUIProps> = ({
     bestBoards,
-    bestUseditems
+    bestUseditems,
+    animationText
 }) => {
-    const { text } = useTextAnimation({
-        toRotate :  ['파워 있는', '자유 게시판과','마켓']
-    })
+
     useEffect(() => {
         const options = {
             root: null,
@@ -52,7 +51,7 @@ const MainPageUI : React.FC<IMainUIProps> = ({
                         <h2 style={{
                             height : '100px'
                         }}>
-                            {text}
+                            {animationText}
                         </h2>
                         <div>
                             파자마를 입은 듯 편하게 이용 가능한 자유 게시판과 중고 마켓

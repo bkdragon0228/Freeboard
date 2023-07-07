@@ -16,6 +16,12 @@ export const FETCH_BOARD = gql`
         address
         addressDetail
       }
+      user {
+        _id
+        email
+        name
+        picture
+      }
     }
   }
 `;

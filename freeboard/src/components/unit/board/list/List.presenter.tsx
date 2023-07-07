@@ -1,18 +1,14 @@
-import React, { ChangeEvent, useState } from "react";
+import React from "react";
+import { BoardListUIProps } from "./List.type";
+
 import * as S from "./List.style";
-import { getDate } from "../../../../commons/utils/utils";
-import { IQuery } from "../../../../commons/types/generated/types";
-import Pagenation from "../../../commons/pagination/pagination";
-import { ApolloQueryResult, OperationVariables } from "@apollo/client";
 import SearchBar from "../../../commons/searchBar/SearchBar";
-import ItemCard from "../../../commons/ItemCard";
-import useBestBoards from "../../../../hook/useBestBoards";
 import DataList from "../../../commons/DataList/DataList";
+import BestBoardList from "./components/BestBoardList";
 
 export default function BoardListUI({
   data,
   handleCreateBoard,
-  handleMoveDetail,
   page,
   setPage,
   refetchBoards,
@@ -20,29 +16,14 @@ export default function BoardListUI({
   lastPage,
   onChangeSearchTerm,
   searchTerm,
-} : {
-  data : Pick<IQuery, "fetchBoards">;
-  handleCreateBoard : React.MouseEventHandler<HTMLButtonElement> ;
-  handleMoveDetail : React.MouseEventHandler<HTMLDivElement>;
-  page : number;
-  setPage : React.Dispatch<React.SetStateAction<number>>;
-  refetchBoards : (variables?: Partial<OperationVariables>) => Promise<ApolloQueryResult<Pick<IQuery, "fetchBoards">>>;
-  refetchLastPage : any;
-  lastPage : number;
-  onChangeSearchTerm : (value : string) => void;
-  searchTerm : string;
-}) {
-    const {data : beatItmes} = useBestBoards()
-
-
+  bestItems
+} : BoardListUIProps
+) {
     return (
       <S.Container>
-        <S.Best>
-          <h2>베스트 게시글</h2>
-          <ItemCard
-            bestItems={beatItmes?.fetchBoardsOfTheBest}
-          />
-        </S.Best>
+        <BestBoardList
+          bestItems={bestItems}
+        />
         <S.InputWrapper>
           <SearchBar
               refetch={refetchBoards}
@@ -50,10 +31,7 @@ export default function BoardListUI({
               onChangeSearchTerm={onChangeSearchTerm}
             />
         </S.InputWrapper>
-        <div style={{
-          width : '1200px',
-          position : 'relative'
-        }}>
+        <S.ListWrpper>
           <DataList
             data={data}
             refetchData={refetchBoards}
@@ -65,9 +43,7 @@ export default function BoardListUI({
           <S.CreateButton onClick={handleCreateBoard}>
             게시글 등록하기
           </S.CreateButton>
-        </div>
-
-
+        </S.ListWrpper>
       </S.Container>
     );
 }
